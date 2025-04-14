@@ -1,0 +1,33 @@
+Caros estudantes, 
+Conforme o método de avaliação apresentado no plano de ensino no início do semestre, a NP2 da disciplina tópicos especiais em programação web se dará a partir  de um projeto que englobe os conteúdos já abordados na disciplina. O projeto poderá ser realizado por equipes de até 03 alunos.
+Objetivo: Construir o backend de uma aplicação (API REST) que atenda os requisitos e regras abaixo descritos.
+
+Requisitos: 
+Definição e validação dos requisitos de um software de biblioteca virtual pública;
+Definição de cronograma de entregas por membro;
+Desenvolver rotas para 05 CRUDs completos (cadastrar, editar, pesquisar todos, pesquisar por ID e excluir);
+Desenvolver pelo menos 01 funcionalidade (que ñ envolva CRUD) no contexto especificado, sendo avaliado pela complexidade do desenvolvimento;
+As entidades deverão possuir ao menos 04 atributos ( sem contar o ID ), podendo diminuir mediante justificativa do contexto;
+Todas as entidades deverão possuir as camadas e padrões de projeto abordados em sala ( Model, DTO, Repository, Service e Controller );
+As possíveis exceções/erros deverão ser devidamente tratados e retornados de uma forma amigável na rota (com seus respectivos Status Code);
+Todas as operações de CRUD das entidades deverão ser executadas em uma base de dados;
+Todo o DDL das tabelas das entidades deverão ser executados via Migration;
+Todas as rotas da API deverão ser completamente documentadas (Swagger);
+Repositório (github) com o projeto;
+Deverá ser submetido um .zip contendo o Projeto construído (código fonte) + nome dos membros da equipe + link do repositório github.
+
+Regras:
+A linguagem de programação utilizada fica a critério do estudante (contanto que aborde todos os tópicos dos requisitos);
+As funcionalidades desenvolvidas deverão estar no contexto especificado (Biblioteca Virtual Pública)
+Todos os CRUDs deverão estar em um contexto semântico com o tema;
+Será obrigatório registros de commit de ambos os membros da dupla;
+Todos deverão apresentar o projeto (5 a 8 min de apresentação);
+Na apresentação deve ser especificado o desenvolvido de cada membro (conforme o cronograma apresentado inicialmente);
+Se não entregar o projeto, a nota definida para a equipe será 0;
+Parte da nota será individual (40%), a depender das entregas realizadas.
+Pode remover membros até dia 14/04;
+Caso a equipe/aluno falte, poderá realizar uma segunda chamada (da apresentação);
+A apresentação tem nota individual, faltando, terá nota 0 atribuída;
+Todas os alunos deverão responder 02 perguntas após a apresentação, elaboradora pelos próprios colegas ou pelo professor;
+Não será considerado como CRUD, a entidade de usuário construída nas aulas
+A apresentação do projeto deverá ser realizada por ambos os membros da dupla
