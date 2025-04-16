@@ -22,8 +22,8 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
-    public BookDTO save(BookDTO book){
-        var bookEntity = MapperUtil.parseObject(book, Book.class);
+    public BookDTO save(BookDTO BookDTO){
+        var bookEntity = MapperUtil.parseObject(BookDTO, Book.class);
         var savedBook = repository.save(bookEntity);
         return MapperUtil.parseObject(savedBook, BookDTO.class);
     }
