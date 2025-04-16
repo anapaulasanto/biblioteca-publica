@@ -1,4 +1,4 @@
-package br.edu.unichristus.domain.dto;
+package br.edu.unichristus.domain.dto.user;
 
 import java.util.Objects;
 

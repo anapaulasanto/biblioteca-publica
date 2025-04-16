@@ -1,7 +1,7 @@
 package br.edu.unichristus.controller;
 
-import br.edu.unichristus.domain.dto.UserDTO;
-import br.edu.unichristus.domain.dto.UserLowDTO;
+import br.edu.unichristus.domain.dto.user.UserDTO;
+import br.edu.unichristus.domain.dto.user.UserLowDTO;
 import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

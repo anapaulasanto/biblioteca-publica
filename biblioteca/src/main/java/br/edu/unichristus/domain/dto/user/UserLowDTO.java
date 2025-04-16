@@ -1,22 +1,15 @@
-package br.edu.unichristus.domain.dto;
+package br.edu.unichristus.domain.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserRolesDTO {
+public class UserLowDTO {
     private Long id;
 
     @JsonProperty("nome")
     private String name;
+
     private String email;
-    private String[] roles;
 
-    public String[] getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String[] roles) {
-        this.roles = roles;
-    }
 
     public Long getId() {
         return id;
