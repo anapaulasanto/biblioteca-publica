@@ -24,19 +24,20 @@ public class LivroService {
     private String apiKey;
 
     public List<LivroLowDTO> buscarLivros(String titulo){
-        String url = endpoint + titulo +"&filter=full" + "&key=" + apiKey;
+        String url = endpoint + titulo + "&filter=full" + "&key=" + apiKey;
 
         RestTemplate restTemplate = new RestTemplate();
 
         GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);
 
         return response.getItems().stream().map(item -> {
+
             AcessInfo acessInfo = item.getAcessInfo();
             boolean pdfDisponivel = acessInfo != null && acessInfo.getPdf().isAvaliable();
             String linkPdf = pdfDisponivel ? acessInfo.getPdf().getAcsTokenLink() : null;
             var volumeInfo = item.getVolumeInfo();
 
-            return new LivroLowDTO(volumeInfo.getImageLinks().getSmallThumbnailUrl(),
+            return new LivroLowDTO(volumeInfo.getImageLinks().getThumbnail(),
                                     volumeInfo.getTitle(),
                                     volumeInfo.getAuthors(),
                                     volumeInfo.getPublishedDate(),

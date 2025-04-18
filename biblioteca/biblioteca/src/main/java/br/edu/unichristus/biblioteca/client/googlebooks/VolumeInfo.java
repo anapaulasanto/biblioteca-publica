@@ -12,23 +12,23 @@ public class VolumeInfo {
     private String description;
 
     public static class Image {
-        private String smallThumbnailUrl;
-        private String thumbnailUrl;
+        private String smallThumbnail;
+        private String thumbnail;
 
-        public String getSmallThumbnailUrl() {
-            return smallThumbnailUrl;
+        public String getSmallThumbnail() {
+            return smallThumbnail;
         }
 
-        public void setSmallThumbnailUrl(String smallThumbnailUrl) {
-            this.smallThumbnailUrl = smallThumbnailUrl;
+        public void setSmallThumbnail(String smallThumbnail) {
+            this.smallThumbnail = smallThumbnail;
         }
 
-        public String getThumbnailUrl() {
-            return thumbnailUrl;
+        public String getThumbnail() {
+            return thumbnail;
         }
 
-        public void setThumbnailUrl(String thumbnailUrl) {
-            this.thumbnailUrl = thumbnailUrl;
+        public void setThumbnail(String thumbnail) {
+            this.thumbnail = thumbnail;
         }
     }
 

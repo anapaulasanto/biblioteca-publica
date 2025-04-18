@@ -3,13 +3,17 @@ package br.edu.unichristus.biblioteca.service;
 
 import br.edu.unichristus.biblioteca.domain.dto.AvaliacaoDTO;
 import br.edu.unichristus.biblioteca.domain.dto.AvaliacaoLowDTO;
+import br.edu.unichristus.biblioteca.domain.dto.TopAvaliadosDTO;
 import br.edu.unichristus.biblioteca.domain.model.Avaliacao;
 import br.edu.unichristus.biblioteca.repository.AvaliacaoRepository;
 import br.edu.unichristus.biblioteca.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AvaliacaoService {
@@ -64,6 +68,5 @@ public class AvaliacaoService {
                 .map(e -> new TopAvaliadosDTO(e.getKey(), e.getValue())) // transforma em DTO
                 .collect(Collectors.toList()); // retorna como lista
     }
-    Chat, voce pode me explicar detalhadamente cada metodo posto nesse codigo e o que faz? Não estou conseguindo compreender alguns metodos e nem o codigo
 
 }

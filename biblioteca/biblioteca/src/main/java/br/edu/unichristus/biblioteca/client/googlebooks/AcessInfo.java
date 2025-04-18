@@ -5,15 +5,15 @@ public class AcessInfo {
     private Pdf pdf;
 
     public static class Pdf {
-        private boolean isAvaliable;
+        private boolean isAvailable;
         private String acsTokenLink;
 
         public boolean isAvaliable() {
-            return isAvaliable;
+            return isAvailable;
         }
 
         public void setAvaliable(boolean avaliable) {
-            isAvaliable = avaliable;
+            isAvailable = avaliable;
         }
 
         public String getAcsTokenLink() {
