@@ -1,3 +1,5 @@
+import userIcon from '../assets/icon-user.png'
+
 export default function NavBar() {
     return(
         <div>
@@ -44,7 +46,10 @@ export default function NavBar() {
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
                     </form>  
-                </div>
+                    <div>
+                        <img class="btn-user border rounded-circle p-2" src={userIcon} alt="" />
+                    </div>
+                </div>           
             </nav>
         </div>
     )

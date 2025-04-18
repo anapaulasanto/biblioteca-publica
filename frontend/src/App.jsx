@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Books from './pages/Books';
+import BookDetails from './pages/BookDetails';
 
 function App() {
 
@@ -8,7 +9,8 @@ function App() {
       <BrowserRouter>
         <div>
           <Routes>
-            <Route path="/books" element={<Books />} />
+            <Route path="/" element={<Books />} />
+            <Route path="book/:slug" element={<BookDetails />} />
           </Routes>
         </div>
       </BrowserRouter>
