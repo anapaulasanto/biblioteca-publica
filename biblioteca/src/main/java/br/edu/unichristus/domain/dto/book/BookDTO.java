@@ -2,6 +2,7 @@ package br.edu.unichristus.domain.dto.book;
 
 
 import br.edu.unichristus.domain.model.Book;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -11,6 +12,8 @@ public class BookDTO {
     private String author;
     private int year;
     private String isbn;
+    private Long categoryId;
+
 
     public BookDTO(Long id, String title, String author, int year, String isbn) {
         this.id = id;
@@ -62,6 +65,15 @@ public class BookDTO {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,6 +2,7 @@ package br.edu.unichristus.domain.dto.category;
 
 import br.edu.unichristus.domain.model.Category;
 
+import java.util.List;
 import java.util.Objects;
 
 public class CategoryDTO {
@@ -10,6 +11,7 @@ public class CategoryDTO {
     private String description;
     private int categoryCode;
     private int categoryPopularity;
+    private List<Long> bookIds;
 
     public CategoryDTO(Long id, String categoryName, String description, int categoryCode, int categoryPopularity) {
         this.id = id;

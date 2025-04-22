@@ -19,6 +19,10 @@ public class Book {
     @Column(unique = true)
     private String isbn;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Book(Long id, String title, String author, int year, String isbn) {
         this.id = id;
         this.title = title;
@@ -70,9 +74,13 @@ public class Book {
         this.isbn = isbn;
     }
 
-    // Se quiser já preparar pra relacionamento com Editora:
-    // @ManyToOne
-    // private Editora editora;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -100,4 +108,6 @@ public class Book {
                 ", isbn='" + isbn + '\'' +
                 '}';
     }
+
+
 }

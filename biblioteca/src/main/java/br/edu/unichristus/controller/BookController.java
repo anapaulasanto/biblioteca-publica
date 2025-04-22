@@ -19,8 +19,8 @@ public class BookController {
         return service.save(book);
     }
 
-    @PutMapping
-    public BookDTO update(@RequestBody BookDTO book){
+    @PutMapping("/{id}")
+    public BookDTO update(@PathVariable Long id, @RequestBody BookDTO book){
         return service.save(book);
     }
 

@@ -23,10 +23,10 @@ public class User {
     private String password;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(updatable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     public User(){

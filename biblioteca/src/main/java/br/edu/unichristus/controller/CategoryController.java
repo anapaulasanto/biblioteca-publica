@@ -1,7 +1,9 @@
 package br.edu.unichristus.controller;
 
+import br.edu.unichristus.domain.dto.book.BookDTO;
 import br.edu.unichristus.domain.dto.category.CategoryDTO;
 import br.edu.unichristus.domain.model.Category;
+import br.edu.unichristus.service.BookService;
 import br.edu.unichristus.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,13 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);
+    }
+
+    @Autowired
+    private BookService bookService;
+
+    @GetMapping("/{id}/books")
+    public List<BookDTO> getBooksByCategory(@PathVariable("id") Long categoryId) {
+        return bookService.findBooksByCategoryId(categoryId);
     }
 }

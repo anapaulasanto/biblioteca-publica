@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +24,9 @@ public class Category {
     @Min(value = 1, message = "A popularidade deve ser no mínimo 1")
     @Max(value = 10, message = "A popularidade deve ser no máximo 10")
     private int categoryPopularity;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Book> books = new ArrayList<>();
 
     public Category(Long id, String categoryName, String description, int categoryCode, int categoryPopularity) {
         this.id = id;
