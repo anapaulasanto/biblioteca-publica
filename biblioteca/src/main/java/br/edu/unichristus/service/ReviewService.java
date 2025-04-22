@@ -1,7 +1,6 @@
 package br.edu.unichristus.service;
 
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
-import br.edu.unichristus.domain.dto.review.ReviewLowDTO;
 import br.edu.unichristus.domain.model.Review;
 import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.ReviewRepository;
@@ -17,15 +16,15 @@ public class ReviewService {
     @Autowired
     private ReviewRepository repository;
 
-    public ReviewLowDTO save(ReviewDTO review){
+    public ReviewDTO save(ReviewDTO review){
         var reviewEntity = MapperUtil.parseObject(review, Review.class);
         var savedReview = repository.save(reviewEntity);
-        return MapperUtil.parseObject(savedReview, ReviewLowDTO.class);
+        return MapperUtil.parseObject(savedReview, ReviewDTO.class);
     }
 
-    public List<ReviewLowDTO> findAll(){
+    public List<ReviewDTO> findAll(){
         var listReviews = repository.findAll();
-        return MapperUtil.parseListObjects(listReviews, ReviewLowDTO.class);
+        return MapperUtil.parseListObjects(listReviews, ReviewDTO.class);
     }
 
     public Review findById(Long id){

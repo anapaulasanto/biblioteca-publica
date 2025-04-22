@@ -2,15 +2,21 @@ package br.edu.unichristus.domain.dto.review;
 
 import br.edu.unichristus.domain.model.Review;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class ReviewDTO {
     private Long id;
+
+    @JsonProperty("nota")
     private double rating;
+
+    @JsonProperty("comentário")
     private String comment;
 
+    @JsonProperty("data da avaliação")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate reviewDate;
     private String reviewerName;

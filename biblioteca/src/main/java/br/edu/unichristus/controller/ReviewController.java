@@ -1,7 +1,6 @@
 package br.edu.unichristus.controller;
 
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
-import br.edu.unichristus.domain.dto.review.ReviewLowDTO;
 import br.edu.unichristus.domain.model.Review;
 import br.edu.unichristus.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +15,17 @@ public class ReviewController {
     private ReviewService service;
 
     @PostMapping
-    public ReviewLowDTO save(@RequestBody ReviewDTO review){
+    public ReviewDTO save(@RequestBody ReviewDTO review){
         return service.save(review);
     }
 
     @PutMapping
-    public ReviewLowDTO update(@RequestBody ReviewDTO review){
+    public ReviewDTO update(@RequestBody ReviewDTO review){
         return service.save(review);
     }
 
     @GetMapping("/all")
-    public List<ReviewLowDTO> findAll(){
+    public List<ReviewDTO> findAll(){
         return service.findAll();
     }
 

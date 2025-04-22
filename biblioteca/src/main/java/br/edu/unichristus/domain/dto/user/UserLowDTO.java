@@ -2,6 +2,8 @@ package br.edu.unichristus.domain.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
+
 public class UserLowDTO {
     private Long id;
 
@@ -10,6 +12,8 @@ public class UserLowDTO {
 
     private String email;
 
+    @JsonProperty(value="atualizado em", access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -34,4 +38,9 @@ public class UserLowDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public LocalDateTime getUpdatedAt() {  return updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
 }
