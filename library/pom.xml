@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.edu.unichristus</groupId>
-	<artifactId>biblioteca</artifactId>
+	<artifactId>publiclibrary</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>backend</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Public Library</name>
+	<description>Sistema de gerenciamento de biblioteca pública com Spring Boot.</description>
 	<url/>
 	<licenses>
 		<license/>

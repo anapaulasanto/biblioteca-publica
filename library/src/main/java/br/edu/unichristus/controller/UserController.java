@@ -1,8 +1,10 @@
 package br.edu.unichristus.controller;
 
+import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.dto.user.UserDTO;
 import br.edu.unichristus.domain.dto.user.UserLowDTO;
 import br.edu.unichristus.domain.model.User;
+import br.edu.unichristus.service.ReviewService;
 import br.edu.unichristus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,12 @@ public class UserController {
         service.delete(id);
     }
 
-
+    @Autowired
+    private ReviewService reviewService;
+    @GetMapping("/{id}/reviews")
+    public List<ReviewDTO> getReviewsByUser(@PathVariable Long id) {
+        return reviewService.findReviewsByUserId(id);
+    }
 
 
 }

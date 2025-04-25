@@ -34,6 +34,11 @@ public class ReviewService {
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
 
+    //Listar reviews de um mesmo usuário
+    public List<ReviewDTO> findReviewsByUserId(Long userId) {
+        List<Review> reviews = repository.findByUserId(userId);
+        return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
+    }
 
 
     public ReviewDTO save(ReviewDTO reviewDTO) {

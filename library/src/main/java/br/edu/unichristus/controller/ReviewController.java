@@ -43,4 +43,9 @@ public class ReviewController {
     public List<ReviewDTO> getByBook(@PathVariable Long bookId) {
         return service.findByBookId(bookId);
     }
+
+    @GetMapping("/{id}/reviews")
+    public List<ReviewDTO> getReviewsByUser(@PathVariable Long id) {
+        return service.findReviewsByUserId(id);
+    }
 }

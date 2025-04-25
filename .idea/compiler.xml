@@ -9,5 +9,13 @@
         <module name="biblioteca" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="biblioteca-publica" target="24" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="biblioteca" options="-parameters" />
+    </option>
   </component>
 </project>
