@@ -38,4 +38,10 @@ public class RentalController {
     public void delete(@PathVariable Long id){
         service.delete(id);
     }
+
+    @GetMapping("/user/{userId}")
+    public List<RentalDTO> findByUser(@PathVariable Long userId) {
+        return service.findByUserId(userId);
+    }
+
 }

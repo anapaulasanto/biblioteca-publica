@@ -20,6 +20,10 @@ public class Rental {
     @Column(length = 150)
     private String notes;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Rental() {
     }
 
@@ -69,6 +73,14 @@ public class Rental {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

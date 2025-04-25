@@ -11,6 +11,9 @@ public class RentalDTO {
     private String returnDate;
     private String status;
     private String notes;
+    private Long userId;
+    private String userName; // Apenas leitura, preenchido no retorno se quiser exibir
+
 
     public RentalDTO(Long id, String rentalDate, String returnDate, String status, String notes) {
         this.id = id;
@@ -59,6 +62,21 @@ public class RentalDTO {
         return notes;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public Long getUserId() {
+        return userId;
+    }
+
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -88,4 +106,6 @@ public class RentalDTO {
                 ", notes='" + notes + '\'' +
                 '}';
     }
+
+
 }

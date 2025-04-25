@@ -3,6 +3,7 @@ package br.edu.unichristus.domain.dto.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class UserDTO {
@@ -20,6 +21,8 @@ public class UserDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedAt;
 
+    private List<Long> reviewIds;
+    private List<Long> rentalIds;
 
     public UserDTO(){
 
