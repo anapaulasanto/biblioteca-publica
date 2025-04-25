@@ -1,6 +1,7 @@
 package br.edu.unichristus.domain.model;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,9 +20,15 @@ public class Book {
     @Column(unique = true)
     private String isbn;
 
+    // Relacionamento N livros : 1 categoria
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    // Relacionamento 1 livro : N reviews
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
 
     public Book(Long id, String title, String author, int year, String isbn) {
         this.id = id;

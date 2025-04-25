@@ -1,5 +1,6 @@
 package br.edu.unichristus.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,7 +20,18 @@ public class Review {
 
     private LocalDate reviewDate; // data da avaliação
 
-    private String reviewerName; // nome do avaliador (dado sensível)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String reviewerName;
+
+    // Relação entre N reviews : 1 livro
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
+
+    // Relação entre N reviews : 1 usuário
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Review(Long id, double rating, String comment, LocalDate reviewDate, String reviewerName) {
         this.id = id;
@@ -71,6 +83,26 @@ public class Review {
     public void setReviewerName(String reviewerName) {
         this.reviewerName = reviewerName;
     }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if (user != null) {
+            this.reviewerName = user.getName(); // preenchimento automático
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -74,6 +74,7 @@ public class BookDTO {
         this.categoryId = categoryId;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -39,4 +39,8 @@ public class ReviewController {
         service.delete(id);
     }
 
+    @GetMapping("/book/{bookId}")
+    public List<ReviewDTO> getByBook(@PathVariable Long bookId) {
+        return service.findByBookId(bookId);
+    }
 }

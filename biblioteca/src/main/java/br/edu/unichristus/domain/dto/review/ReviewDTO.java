@@ -13,7 +13,7 @@ public class ReviewDTO {
     @JsonProperty("nota")
     private double rating;
 
-    @JsonProperty("comentário")
+    @JsonProperty("comentario")
     private String comment;
 
     @JsonProperty("data da avaliação")
@@ -21,12 +21,17 @@ public class ReviewDTO {
     private LocalDate reviewDate;
     private String reviewerName;
 
-    public ReviewDTO(Long id, double rating, String comment, LocalDate reviewDate, String reviewerName) {
+    private Long bookId;
+    private Long userId;
+
+    public ReviewDTO(Long id, double rating, String comment, LocalDate reviewDate, String reviewerName, Long bookId, Long userId) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
         this.reviewDate = reviewDate;
         this.reviewerName = reviewerName;
+        this.bookId = bookId;
+        this.userId = userId;
     }
 
     public ReviewDTO() {
@@ -71,6 +76,23 @@ public class ReviewDTO {
     public void setReviewerName(String reviewerName) {
         this.reviewerName = reviewerName;
     }
+
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

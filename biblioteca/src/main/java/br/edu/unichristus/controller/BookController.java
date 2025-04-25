@@ -1,8 +1,10 @@
 package br.edu.unichristus.controller;
 
 import br.edu.unichristus.domain.dto.book.BookDTO;
+import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Book;
 import br.edu.unichristus.service.BookService;
+import br.edu.unichristus.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +39,13 @@ public class BookController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);
+    }
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @GetMapping("/{id}/reviews")
+    public List<ReviewDTO> getReviewByBook(@PathVariable Long id) {
+        return reviewService.findReviewsByBookId(id);
     }
 }
