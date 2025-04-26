@@ -66,6 +66,38 @@ public class BookService {
         return repository.findById(id).get();
     }
 
+    public List<BookDTO> findByTitle(String title){
+        String url = endpoint + title + "&key=" + apiKey; // armazena em url o endpoint completo pra fazer a requisição à API
+        RestTemplate restTemplate =new RestTemplate(); // cria instancia de RestTemplate (classe do spring q faz chamadas à API externa, tipo o axios do React)
+        GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);// faz uma requisição do tipo GET pra "url", esperando receber um dado do tipo GoogleResponse
+
+        if (response.getItems() == null) { // tratamento pra quando a resposta da api for null
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.book.findbytitle.apiresponse.null",
+                    "Nenhum livro encontrado para o título informado.");
+        }
+
+        return response.getItems().stream().map(items -> { // se a resposta da api nao for null, faz um map na classe que armazena as respostas da API
+            VolumeInfo volumeInfo = items.getVolumeInfo();
+
+            String isbn13 = null;
+            for (VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
+                if ("ISBN_13".equals(identifier.getType())) {
+                    isbn13 = identifier.getIdentifier();
+                    break; // caso encontre o ISBN-13 para a iteração
+                }
+            }
+
+            return new BookDTO(
+                    items.getId(),
+                    volumeInfo.getTitle(),
+                    volumeInfo.getAuthors(),
+                    volumeInfo.getPublishedDate(),
+                    isbn13
+            );
+        }).collect(Collectors.toList()); // transforma em uma lista
+    }
+
     public void delete(Long id){
         repository.deleteById(id);
     }

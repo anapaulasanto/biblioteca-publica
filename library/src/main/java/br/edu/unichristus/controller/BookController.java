@@ -38,6 +38,11 @@ public class BookController {
         return service.findById(id);
     }
 
+    @GetMapping() // coloquei requestParam pra não conflitar com a rota de id (ex de busca: /api/v1/book?title=love)
+    public List<BookDTO> findByTitle(@RequestParam String title) {
+        return service.findByTitle(title);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);

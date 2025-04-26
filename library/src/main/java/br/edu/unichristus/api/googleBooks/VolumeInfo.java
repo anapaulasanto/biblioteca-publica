@@ -1,5 +1,6 @@
 package br.edu.unichristus.api.googleBooks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VolumeInfo {
@@ -7,9 +8,9 @@ public class VolumeInfo {
     private String title;
     private List<String> authors;
     private String publishedDate;
-    private industryIdentifiers isbn;
+    private List<IndustryIdentifiers> industryIdentifiers = new ArrayList<>();
 
-    public static class industryIdentifiers {
+    public static class IndustryIdentifiers {
         private String type;
         private String identifier;
 
@@ -54,11 +55,11 @@ public class VolumeInfo {
         this.publishedDate = publishedDate;
     }
 
-    public industryIdentifiers getIsbn() {
-        return isbn;
+    public List<IndustryIdentifiers> getIndustryIdentifiers() {
+        return industryIdentifiers;
     }
 
-    public void setIsbn(industryIdentifiers isbn) {
-        this.isbn = isbn;
+    public void setIndustryIdentifiers(List<IndustryIdentifiers> industryIdentifiers) {
+        this.industryIdentifiers = industryIdentifiers;
     }
 }
