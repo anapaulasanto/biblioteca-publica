@@ -11,11 +11,11 @@ public class BookDTO {
     private String id;
     private String title;
     private List<String> author;
-    private int year;
+    private String year;
     private String isbn;
     private Long categoryId;
 
-    public BookDTO(String id, String title, List<String> author, int year, String isbn) {
+    public BookDTO(String id, String title, List<String> author, String year, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -50,11 +50,11 @@ public class BookDTO {
         this.author = author;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
@@ -79,7 +79,7 @@ public class BookDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookDTO bookDTO = (BookDTO) o;
-        return year == bookDTO.year && Objects.equals(id, bookDTO.id) && Objects.equals(title, bookDTO.title) && Objects.equals(author, bookDTO.author) && Objects.equals(isbn, bookDTO.isbn) && Objects.equals(categoryId, bookDTO.categoryId);
+        return Objects.equals(id, bookDTO.id) && Objects.equals(title, bookDTO.title) && Objects.equals(author, bookDTO.author) && Objects.equals(year, bookDTO.year) && Objects.equals(isbn, bookDTO.isbn) && Objects.equals(categoryId, bookDTO.categoryId);
     }
 
     @Override
@@ -90,10 +90,10 @@ public class BookDTO {
     @Override
     public String toString() {
         return "BookDTO{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", author=" + author +
-                ", year=" + year +
+                ", year='" + year + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", categoryId=" + categoryId +
                 '}';

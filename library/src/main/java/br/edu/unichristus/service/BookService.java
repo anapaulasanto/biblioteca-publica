@@ -66,7 +66,6 @@ public class BookService {
         return repository.findById(id).get();
     }
 
-
     public void delete(Long id){
         repository.deleteById(id);
     }

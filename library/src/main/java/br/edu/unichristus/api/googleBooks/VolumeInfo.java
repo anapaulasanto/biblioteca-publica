@@ -6,7 +6,7 @@ public class VolumeInfo {
 
     private String title;
     private List<String> authors;
-    private int publishedDate;
+    private String publishedDate;
     private industryIdentifiers isbn;
 
     public static class industryIdentifiers {
@@ -46,11 +46,11 @@ public class VolumeInfo {
         this.authors = authors;
     }
 
-    public int getPublishedDate() {
+    public String getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(int publishedDate) {
+    public void setPublishedDate(String publishedDate) {
         this.publishedDate = publishedDate;
     }
 
