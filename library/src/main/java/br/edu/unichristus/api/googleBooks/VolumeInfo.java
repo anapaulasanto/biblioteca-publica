@@ -6,9 +6,29 @@ public class VolumeInfo {
 
     private String title;
     private List<String> authors;
-    private String publishedDate;
-    private String description;
+    private int publishedDate;
+    private industryIdentifiers isbn;
 
+    public static class industryIdentifiers {
+        private String type;
+        private String identifier;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getIdentifier() {
+            return identifier;
+        }
+
+        public void setIdentifier(String identifier) {
+            this.identifier = identifier;
+        }
+    }
 
     public String getTitle() {
         return title;
@@ -26,19 +46,19 @@ public class VolumeInfo {
         this.authors = authors;
     }
 
-    public String getPublishedDate() {
+    public int getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(String publishedDate) {
+    public void setPublishedDate(int publishedDate) {
         this.publishedDate = publishedDate;
     }
 
-    public String getDescription() {
-        return description;
+    public industryIdentifiers getIsbn() {
+        return isbn;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIsbn(industryIdentifiers isbn) {
+        this.isbn = isbn;
     }
 }

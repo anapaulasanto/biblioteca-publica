@@ -1,5 +1,7 @@
 package br.edu.unichristus.service;
 
+import br.edu.unichristus.api.googleBooks.GoogleResponse;
+import br.edu.unichristus.api.googleBooks.VolumeInfo;
 import br.edu.unichristus.domain.dto.book.BookDTO;
 import br.edu.unichristus.domain.model.Book;
 import br.edu.unichristus.exception.CommonsException;
@@ -7,10 +9,13 @@ import br.edu.unichristus.repository.BookRepository;
 import br.edu.unichristus.repository.CategoryRepository;
 import br.edu.unichristus.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -19,6 +24,13 @@ public class BookService {
     private BookRepository repository;
     @Autowired
     private CategoryRepository categoryRepository;
+
+    // pega a variavel endpoint.books que salvei no application.properties, que é o endpoint da API do Google
+    @Value("${endpoint.books}")
+    private String endpoint;
+    // pega a minha chave da API que salvei também no properties
+    @Value("${api.key}")
+    private String apiKey;
 
     public BookDTO save(BookDTO bookDTO){
         var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);
@@ -53,6 +65,7 @@ public class BookService {
 
         return repository.findById(id).get();
     }
+
 
     public void delete(Long id){
         repository.deleteById(id);
