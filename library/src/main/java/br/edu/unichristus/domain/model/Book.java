@@ -25,10 +25,6 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // Relacionamento 1 livro : N reviews
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<Review> reviews;
-
 
     public Book(Long id, String title, String author, int year, String isbn) {
         this.id = id;

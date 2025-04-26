@@ -1,9 +1,11 @@
 package br.edu.unichristus.controller;
 
+import br.edu.unichristus.domain.dto.rental.RentalDTO;
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.dto.user.UserDTO;
 import br.edu.unichristus.domain.dto.user.UserLowDTO;
 import br.edu.unichristus.domain.model.User;
+import br.edu.unichristus.service.RentalService;
 import br.edu.unichristus.service.ReviewService;
 import br.edu.unichristus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,11 @@ public class UserController {
         return reviewService.findReviewsByUserId(id);
     }
 
+    @Autowired
+    private RentalService rentalService;
+    @GetMapping("/{userId}/rentals")
+    public List<RentalDTO> getRentalsByUserId(@PathVariable Long userId) {
+        return rentalService.findRentalsByUserId(userId);
+    }
 
 }

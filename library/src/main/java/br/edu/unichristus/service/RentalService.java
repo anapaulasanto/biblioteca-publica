@@ -1,10 +1,14 @@
 package br.edu.unichristus.service;
 
 import br.edu.unichristus.domain.dto.rental.RentalDTO;
+import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Rental;
+import br.edu.unichristus.domain.model.Review;
 import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.exception.CommonsException;
+import br.edu.unichristus.repository.BookRepository;
 import br.edu.unichristus.repository.RentalRepository;
+import br.edu.unichristus.repository.UserRepository;
 import br.edu.unichristus.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,28 +20,44 @@ import java.util.List;
 public class RentalService {
     @Autowired
     private RentalRepository repository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BookRepository bookRepository;
+
+    //Listar rentals de um mesmo livro
+    public List<RentalDTO> findRentalsByBookId(Long bookId) {
+        List<Rental> rentals = repository.findByBookId(bookId);
+        return MapperUtil.parseListObjects(rentals, RentalDTO.class);
+    }
+
+    //Listar rentals de um mesmo user
+    public List<RentalDTO> findRentalsByUserId(Long userId) {
+        List<Rental> rentals = repository.findByUserId(userId);
+        return MapperUtil.parseListObjects(rentals, RentalDTO.class);
+    }
 
     public RentalDTO save(RentalDTO rentalDTO) {
-        var userOptional = repository.findById(rentalDTO.getUserId());
-
-        if (userOptional.isEmpty()) {
+        var user = userRepository.findById(rentalDTO.getUserId());
+        if (user.isEmpty()) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
                     "unichristus.rental.user.notfound", "Usuário não encontrado!");
         }
 
-        // Verificar o conteúdo do Optional para garantir que temos um User
-        User user = userOptional.get().getUser();
-        System.out.println("Usuário encontrado: " + user); // Depuração para confirmar o tipo de user
+        var book = bookRepository.findById(rentalDTO.getBookId());
+        if (book.isEmpty()) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.rental.book.notfound", "Livro não encontrado!");
+        }
 
         var rentalEntity = MapperUtil.parseObject(rentalDTO, Rental.class);
-
-        // Aqui você deve garantir que user seja do tipo User
-        rentalEntity.setUser(user);  // Passando o User para o método setUser() da Rental
+        rentalEntity.setUser(user.get());
+        rentalEntity.setBook(book.get());
 
         var savedRental = repository.save(rentalEntity);
         return MapperUtil.parseObject(savedRental, RentalDTO.class);
-    }
 
+    }
 
 
     public List<RentalDTO> findAll(){

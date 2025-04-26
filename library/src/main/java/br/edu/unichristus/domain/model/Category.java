@@ -25,8 +25,6 @@ public class Category {
     @Max(value = 10, message = "A popularidade deve ser no máximo 10")
     private int categoryPopularity;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Book> books = new ArrayList<>();
 
     public Category(Long id, String categoryName, String description, int categoryCode, int categoryPopularity) {
         this.id = id;

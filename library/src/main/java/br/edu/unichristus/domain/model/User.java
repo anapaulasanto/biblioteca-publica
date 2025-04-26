@@ -30,12 +30,6 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
-
-    @OneToMany(mappedBy = "user")
-    private List<Rental> rentals;
-
     public User(){
 
     }
