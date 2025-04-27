@@ -8,28 +8,8 @@ public class VolumeInfo {
     private String title;
     private List<String> authors;
     private String publishedDate;
-    private List<IndustryIdentifiers> industryIdentifiers = new ArrayList<>();
-
-    public static class IndustryIdentifiers {
-        private String type;
-        private String identifier;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getIdentifier() {
-            return identifier;
-        }
-
-        public void setIdentifier(String identifier) {
-            this.identifier = identifier;
-        }
-    }
+    private String description;
+    private List<String> categories = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -55,11 +35,19 @@ public class VolumeInfo {
         this.publishedDate = publishedDate;
     }
 
-    public List<IndustryIdentifiers> getIndustryIdentifiers() {
-        return industryIdentifiers;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIndustryIdentifiers(List<IndustryIdentifiers> industryIdentifiers) {
-        this.industryIdentifiers = industryIdentifiers;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 }

@@ -1,6 +1,7 @@
 package br.edu.unichristus.controller;
 
 import br.edu.unichristus.domain.dto.book.BookDTO;
+import br.edu.unichristus.domain.dto.book.BookLowDTO;
 import br.edu.unichristus.domain.dto.rental.RentalDTO;
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Book;
@@ -38,11 +39,6 @@ public class BookController {
         return service.findById(id);
     }
 
-    @GetMapping() // coloquei requestParam pra não conflitar com a rota de id (ex de busca: /api/v1/book?title=love)
-    public List<BookDTO> findByTitle(@RequestParam String title) {
-        return service.findByTitle(title);
-    }
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);
@@ -62,5 +58,12 @@ public class BookController {
     @GetMapping("/{id}/rentals")
     public List<RentalDTO> getRentalByBook(@PathVariable Long id) {
         return rentalService.findRentalsByBookId(id);
+    }
+
+
+    //ENDPOINTS DA API DO GOOGLE
+    @GetMapping() // coloquei requestParam pra não conflitar com a rota de id (ex de busca: /api/v1/book?title=love)
+    public List<BookLowDTO> findByTitle(@RequestParam String title) {
+        return service.findByTitle(title);
     }
 }

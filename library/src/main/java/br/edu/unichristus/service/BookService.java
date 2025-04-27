@@ -3,6 +3,7 @@ package br.edu.unichristus.service;
 import br.edu.unichristus.api.googleBooks.GoogleResponse;
 import br.edu.unichristus.api.googleBooks.VolumeInfo;
 import br.edu.unichristus.domain.dto.book.BookDTO;
+import br.edu.unichristus.domain.dto.book.BookLowDTO;
 import br.edu.unichristus.domain.model.Book;
 import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.BookRepository;
@@ -66,7 +67,7 @@ public class BookService {
         return repository.findById(id).get();
     }
 
-    public List<BookDTO> findByTitle(String title){
+    public List<BookLowDTO> findByTitle(String title){
         String url = endpoint + title + "&key=" + apiKey; // armazena em url o endpoint completo pra fazer a requisição à API
         RestTemplate restTemplate =new RestTemplate(); // cria instancia de RestTemplate (classe do spring q faz chamadas à API externa, tipo o axios do React)
         GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);// faz uma requisição do tipo GET pra "url", esperando receber um dado do tipo GoogleResponse
@@ -80,20 +81,13 @@ public class BookService {
         return response.getItems().stream().map(items -> { // se a resposta da api nao for null, faz um map na classe que armazena as respostas da API
             VolumeInfo volumeInfo = items.getVolumeInfo();
 
-            String isbn13 = null;
-            for (VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
-                if ("ISBN_13".equals(identifier.getType())) {
-                    isbn13 = identifier.getIdentifier();
-                    break; // caso encontre o ISBN-13 para a iteração
-                }
-            }
-
-            return new BookDTO(
+            return new BookLowDTO(
                     items.getId(),
                     volumeInfo.getTitle(),
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
-                    isbn13
+                    volumeInfo.getDescription(),
+                    volumeInfo.getCategories()
             );
         }).collect(Collectors.toList()); // transforma em uma lista
     }
