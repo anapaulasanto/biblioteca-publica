@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VolumeInfo {
-
     private String title;
     private List<String> authors;
     private String publishedDate;

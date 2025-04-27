@@ -1,5 +1,6 @@
 package br.edu.unichristus.service;
 
+import br.edu.unichristus.api.googleBooks.AccessInfo;
 import br.edu.unichristus.api.googleBooks.GoogleResponse;
 import br.edu.unichristus.api.googleBooks.VolumeInfo;
 import br.edu.unichristus.domain.dto.book.BookDTO;
@@ -87,6 +88,12 @@ public class BookService {
 
         return response.getItems().stream().map(items -> { // se a resposta da api nao for null, faz um map na classe que armazena as respostas da API
             VolumeInfo volumeInfo = items.getVolumeInfo();
+            AccessInfo accessInfo = items.getAccessInfo();
+            String linkPdf = null;
+
+            if (accessInfo != null && accessInfo.getPdf() != null && accessInfo.getPdf().isAvailable()) {
+                linkPdf = accessInfo.getPdf().getAcsTokenLink();
+            }
 
             return new BookLowDTO(
                     items.getId(),
@@ -94,7 +101,8 @@ public class BookService {
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
                     volumeInfo.getDescription(),
-                    volumeInfo.getCategories()
+                    volumeInfo.getCategories(),
+                    linkPdf
             );
         }).collect(Collectors.toList()); // transforma em uma lista
     }
@@ -111,6 +119,12 @@ public class BookService {
 
         return response.getItems().stream().map(items -> {
             VolumeInfo volumeInfo = items.getVolumeInfo();
+            AccessInfo accessInfo = items.getAccessInfo();
+            String linkPdf = null;
+
+            if (accessInfo != null && accessInfo.getPdf() != null && accessInfo.getPdf().isAvailable()) {
+                linkPdf = accessInfo.getPdf().getAcsTokenLink();
+            }
 
             return new BookLowDTO(
                     items.getId(),
@@ -118,7 +132,8 @@ public class BookService {
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
                     volumeInfo.getDescription(),
-                    volumeInfo.getCategories()
+                    volumeInfo.getCategories(),
+                    linkPdf
             );
         }).collect(Collectors.toList());
     }
@@ -135,6 +150,12 @@ public class BookService {
 
         return response.getItems().stream().map(items -> {
             VolumeInfo volumeInfo = items.getVolumeInfo();
+            AccessInfo accessInfo = items.getAccessInfo();
+            String linkPdf = null;
+
+            if (accessInfo != null && accessInfo.getPdf() != null && accessInfo.getPdf().isAvailable()) {
+                linkPdf = accessInfo.getPdf().getAcsTokenLink();
+            }
 
             return new BookLowDTO(
                     items.getId(),
@@ -142,7 +163,8 @@ public class BookService {
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
                     volumeInfo.getDescription(),
-                    volumeInfo.getCategories()
+                    volumeInfo.getCategories(),
+                    linkPdf
             );
         }).collect(Collectors.toList());
     }
@@ -153,12 +175,18 @@ public class BookService {
 
         if (response.getItems() == null) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.findbyauthor.apiresponse.null",
+                    "unichristus.book.findbysubject.apiresponse.null",
                     "Nenhum livro encontrado para o assunto informado.");
         }
 
         return response.getItems().stream().map(items -> {
             VolumeInfo volumeInfo = items.getVolumeInfo();
+            AccessInfo accessInfo = items.getAccessInfo();
+            String linkPdf = null;
+
+            if (accessInfo != null && accessInfo.getPdf() != null && accessInfo.getPdf().isAvailable()) {
+                linkPdf = accessInfo.getPdf().getAcsTokenLink();
+            }
 
             return new BookLowDTO(
                     items.getId(),
@@ -166,7 +194,8 @@ public class BookService {
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
                     volumeInfo.getDescription(),
-                    volumeInfo.getCategories()
+                    volumeInfo.getCategories(),
+                    linkPdf
             );
         }).collect(Collectors.toList());
     }

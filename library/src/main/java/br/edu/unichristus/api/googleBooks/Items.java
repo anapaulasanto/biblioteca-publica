@@ -2,6 +2,7 @@ package br.edu.unichristus.api.googleBooks;
 
 public class Items {
     private VolumeInfo volumeInfo;
+    private AccessInfo accessInfo;
     private String id;
 
     public String getId() {
@@ -10,6 +11,14 @@ public class Items {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public AccessInfo getAccessInfo() {
+        return accessInfo;
+    }
+
+    public void setAccessInfo(AccessInfo acessInfo) {
+        this.accessInfo = acessInfo;
     }
 
     public VolumeInfo getVolumeInfo() {

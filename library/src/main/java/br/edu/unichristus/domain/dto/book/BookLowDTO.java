@@ -13,14 +13,16 @@ public class BookLowDTO {
     private String year;
     private String description;
     private List<String> categories;
+    private String pdf;
 
-    public BookLowDTO(String id, String title, List<String> author, String year, String description, List<String> categories) {
+    public BookLowDTO(String id, String title, List<String> author, String year, String description, List<String> categories, String pdf) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
         this.description = description;
         this.categories = categories;
+        this.pdf = pdf;
     }
 
     public BookLowDTO() {
@@ -72,5 +74,13 @@ public class BookLowDTO {
 
     public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    public String getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(String pdf) {
+        this.pdf = pdf;
     }
 }
