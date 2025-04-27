@@ -68,8 +68,13 @@ public class BookController {
         return service.findAllApi();
     }
 
-    @GetMapping("/external/search") //ex de busca: http://localhost:8081/api/v1/book/external/search?title=love
+    @GetMapping("/external/search/title") //ex de busca: http://localhost:8081/api/v1/book/external/search/title?title=love
     public List<BookLowDTO> findByTitle(@RequestParam String title) {
         return service.findByTitle(title);
+    }
+
+    @GetMapping("/external/search/author") //ex de busca: http://localhost:8081/api/v1/book/external/search/author?author=cury
+    public List<BookLowDTO> findByAuthor(@RequestParam String author) {
+        return service.findByAuthor(author);
     }
 }
