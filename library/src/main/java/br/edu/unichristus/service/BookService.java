@@ -12,6 +12,7 @@ import br.edu.unichristus.repository.CategoryRepository;
 import br.edu.unichristus.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -37,21 +38,31 @@ public class BookService {
     RestTemplate restTemplate = new RestTemplate(); // cria instancia de RestTemplate (classe do spring q faz chamadas à API externa, tipo o axios do React)
 
     public BookDTO save(BookDTO bookDTO){
-        var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);
+        try {
+            var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);
 
-        // salvando categoria na entidade livro
-        var category = categoryRepository.findById(bookDTO.getCategoryId())
-                .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
-                        "unichristus.category.notfound",
-                        "Categoria não encontrada!"));
+            // salvando categoria na entidade livro
+            var category = categoryRepository.findById(bookDTO.getCategoryId())
+                    .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                            "unichristus.category.notfound",
+                            "Categoria não encontrada!"));
 
-        bookEntity.setCategory(category);
+            bookEntity.setCategory(category);
 
-        var savedBook = repository.save(bookEntity);
-        BookDTO dto = MapperUtil.parseObject(savedBook, BookDTO.class);
-        dto.setCategoryId(savedBook.getCategory().getId());
+            var savedBook = repository.save(bookEntity);
+            BookDTO dto = MapperUtil.parseObject(savedBook, BookDTO.class);
+            dto.setCategoryId(savedBook.getCategory().getId());
 
-        return dto;
+            return dto;
+
+        } catch(DataIntegrityViolationException ex) {// trata exceção que viola as regras do model da entidade
+            throw new CommonsException(
+                    HttpStatus.BAD_REQUEST,
+                    "unichristus.book.save.dataintegrity",
+                    "Erro ao tentar salvar livro no banco. Alguma regra do banco foi violada durante o processo."
+            );
+
+        }
     }
 
     public List<BookDTO> findAll(){
@@ -61,22 +72,35 @@ public class BookService {
 
     public Book findById(Long id){
         var bookEntity = repository.findById(id);
+
         if(bookEntity.isEmpty()){
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.book.findbyid.notfound",
                     "Livro não encontrado!");
         }
-
         return repository.findById(id).get();
     }
 
     public void delete(Long id){
+        var categoryEntity = repository.findById(id);
+
+        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id a ser deletado
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.book.delete.notfound",
+                    "Livro não encontrado!");
+        }
         repository.deleteById(id);
     }
 
     //Listar livros de uma mesma categoria
     public List<BookDTO> findBooksByCategoryId(Long categoryId) {
         List<Book> books = repository.findByCategoryId(categoryId);
+
+        if(books.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.book.findbooksbycategoryid.notfound",
+                    "Categoria de livros não encontrada!");
+        }
         return MapperUtil.parseListObjects(books, BookDTO.class);
     }
 
