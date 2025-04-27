@@ -96,7 +96,6 @@ public class BookService {
             }
 
             return new BookLowDTO(
-                    items.getId(),
                     volumeInfo.getTitle(),
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
@@ -127,7 +126,6 @@ public class BookService {
             }
 
             return new BookLowDTO(
-                    items.getId(),
                     volumeInfo.getTitle(),
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
@@ -158,7 +156,6 @@ public class BookService {
             }
 
             return new BookLowDTO(
-                    items.getId(),
                     volumeInfo.getTitle(),
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),
@@ -189,7 +186,6 @@ public class BookService {
             }
 
             return new BookLowDTO(
-                    items.getId(),
                     volumeInfo.getTitle(),
                     volumeInfo.getAuthors(),
                     volumeInfo.getPublishedDate(),

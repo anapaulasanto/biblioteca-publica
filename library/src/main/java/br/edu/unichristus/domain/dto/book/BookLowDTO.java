@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class BookLowDTO {
-    private String id;
     private String title;
     private List<String> author;
     private String year;
@@ -15,8 +14,7 @@ public class BookLowDTO {
     private List<String> categories;
     private String pdf;
 
-    public BookLowDTO(String id, String title, List<String> author, String year, String description, List<String> categories, String pdf) {
-        this.id = id;
+    public BookLowDTO(String title, List<String> author, String year, String description, List<String> categories, String pdf) {
         this.title = title;
         this.author = author;
         this.year = year;
@@ -26,14 +24,6 @@ public class BookLowDTO {
     }
 
     public BookLowDTO() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
