@@ -19,6 +19,7 @@ public class BookController {
     @Autowired
     private BookService service;
 
+    // ROTAS PARA LIVROS SALVOS NO BANCO
     @PostMapping
     public BookDTO save(@RequestBody BookDTO book){
         return service.save(book);
@@ -61,8 +62,13 @@ public class BookController {
     }
 
 
-    //ENDPOINTS DA API DO GOOGLE
-    @GetMapping() // coloquei requestParam pra não conflitar com a rota de id (ex de busca: /api/v1/book?title=love)
+    // ROTAS PARA LIVROS DA API DO GOOGLE
+    @GetMapping("/external/all") //endpoint: http://localhost:8081/api/v1/book/external/all
+    public List<BookLowDTO> findAllApi() {
+        return service.findAllApi();
+    }
+
+    @GetMapping("/external/search") //ex de busca: http://localhost:8081/api/v1/book/external/search?title=love
     public List<BookLowDTO> findByTitle(@RequestParam String title) {
         return service.findByTitle(title);
     }
