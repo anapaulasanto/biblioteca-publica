@@ -147,4 +147,28 @@ public class BookService {
         }).collect(Collectors.toList());
     }
 
+    public List<BookLowDTO> findBySubject(String subject) {
+        String url = endpoint + "subject:" + subject + "&key=" + apiKey;
+        GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);
+
+        if (response.getItems() == null) {
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.book.findbyauthor.apiresponse.null",
+                    "Nenhum livro encontrado para o assunto informado.");
+        }
+
+        return response.getItems().stream().map(items -> {
+            VolumeInfo volumeInfo = items.getVolumeInfo();
+
+            return new BookLowDTO(
+                    items.getId(),
+                    volumeInfo.getTitle(),
+                    volumeInfo.getAuthors(),
+                    volumeInfo.getPublishedDate(),
+                    volumeInfo.getDescription(),
+                    volumeInfo.getCategories()
+            );
+        }).collect(Collectors.toList());
+    }
+
 }

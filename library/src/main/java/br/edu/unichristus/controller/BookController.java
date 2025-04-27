@@ -63,7 +63,7 @@ public class BookController {
 
 
     // ROTAS PARA LIVROS DA API DO GOOGLE
-    @GetMapping("/external/all") //endpoint: http://localhost:8081/api/v1/book/external/all
+    @GetMapping("/external/all") //ex de busca: http://localhost:8081/api/v1/book/external/all
     public List<BookLowDTO> findAllApi() {
         return service.findAllApi();
     }
@@ -76,5 +76,10 @@ public class BookController {
     @GetMapping("/external/search/author") //ex de busca: http://localhost:8081/api/v1/book/external/search/author?author=cury
     public List<BookLowDTO> findByAuthor(@RequestParam String author) {
         return service.findByAuthor(author);
+    }
+
+    @GetMapping("/external/search/subject") //ex de busca: http://localhost:8081/api/v1/book/external/search/subject?subject=criminal
+    public List<BookLowDTO> findBySubject(@RequestParam String subject) {
+        return service.findBySubject(subject);
     }
 }
