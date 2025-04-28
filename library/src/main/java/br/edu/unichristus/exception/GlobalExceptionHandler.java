@@ -37,22 +37,22 @@ public class GlobalExceptionHandler {
 
             String messageLower = message.toLowerCase();
 
-            if (messageLower.contains("(login)=") && messageLower.contains("viola a restrição de unicidade")) {
+            if (messageLower.contains("(login)=") && messageLower.contains("viola a restrição de unicidade")) { // exceção de user com login já existente
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe um usuário cadastrado com esse login.",
                                 "unichristus.user.save.login.unique"));
 
-            } else if (messageLower.contains("(isbn)=") && messageLower.contains("viola a restrição de unicidade")) {
+            } else if (messageLower.contains("(isbn)=") && messageLower.contains("viola a restrição de unicidade")) { // exceção de book com isbn já existente
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe um livro cadastrado com esse isbn.",
                                 "unichristus.book.save.isbn.unique"));
 
-            } else if (messageLower.contains("(category_code)=") && messageLower.contains("viola a restrição de unicidade")) {
+            } else if (messageLower.contains("(category_code)=") && messageLower.contains("viola a restrição de unicidade")) {// exceção de category com categoryCode já existente
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe uma categoria cadastrada com esse código.",
                                 "unichristus.category.save.categoryCode.unique"));
             }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST) // exceção genérica
                 .body(new MessageDTO("Erro ao tentar salvar. Verifique os dados informados.",
                         "unichristus.user.global.save.error"));
     }

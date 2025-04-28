@@ -77,11 +77,24 @@ public class RentalService {
     }
 
     public void delete(Long id){
+        var rentalEntity = repository.findById(id);
+
+        if(rentalEntity.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.delete.notfound",
+                    "Aluguel não encontrado!");
+        }
         repository.deleteById(id);
     }
 
     public List<RentalDTO> findByUserId(Long userId) {
         var rentals = repository.findByUserId(userId);
+
+        if (rentals.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.findbyuserid.notfound",
+                    "Aluguel não encontrado para o usuário informado!");
+        }
         return MapperUtil.parseListObjects(rentals, RentalDTO.class);
     }
 }
