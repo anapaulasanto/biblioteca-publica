@@ -37,24 +37,48 @@ public class GlobalExceptionHandler {
 
             String messageLower = message.toLowerCase();
 
-            if (messageLower.contains("(login)=") && messageLower.contains("viola a restrição de unicidade")) { // exceção de user com login já existente
+            //EXCEÇÕES PARA CAMPO DUPLICADO
+            if (messageLower.contains("(login)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe um usuário cadastrado com esse login.",
                                 "unichristus.user.save.login.unique"));
 
-            } else if (messageLower.contains("(isbn)=") && messageLower.contains("viola a restrição de unicidade")) { // exceção de book com isbn já existente
+            } else if (messageLower.contains("(isbn)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe um livro cadastrado com esse isbn.",
                                 "unichristus.book.save.isbn.unique"));
 
-            } else if (messageLower.contains("(category_code)=") && messageLower.contains("viola a restrição de unicidade")) {// exceção de category com categoryCode já existente
+            } else if (messageLower.contains("(category_code)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Já existe uma categoria cadastrada com esse código.",
                                 "unichristus.category.save.categoryCode.unique"));
+
+
+            // EXCEÇÕES PARA CAMPO NULO
+            } else if (messageLower.contains("not-null property") && messageLower.contains("user.name")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new MessageDTO("Erro ao tentar salvar usuário. Nome é um campo obrigatório",
+                                "unichristus.user.salve.name.not-null"));
+
+            } else if (messageLower.contains("not-null property") && messageLower.contains("book.title")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new MessageDTO("Erro ao tentar salvar livro. Título é um campo obrigatório",
+                                "unichristus.book.salve.title.not-null"));
+
+            } else if (messageLower.contains("not-null property") && messageLower.contains("rental.rentaldate")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new MessageDTO("Erro ao tentar salvar aluguel. rentalDate é um campo obrigatório",
+                                "unichristus.rental.salve.rentalDate.not-null"));
+
+            } else if (messageLower.contains("not-null property") && messageLower.contains("category.categoryname")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new MessageDTO("Erro ao tentar salvar categoria. categoryName é um campo obrigatório",
+                                "unichristus.category.salve.categoryName.not-null"));
             }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST) // exceção genérica
                 .body(new MessageDTO("Erro ao tentar salvar. Verifique os dados informados.",
-                        "unichristus.user.global.save.error"));
+                        "unichristus.global.save.error"));
     }
 }
 
