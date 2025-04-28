@@ -8,6 +8,7 @@ import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.UserRepository;
 import br.edu.unichristus.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,13 @@ public class UserService {
     }
 
     public void delete(Long id){
+        var userEntity = repository.findById(id);
+
+        if(userEntity.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.user.delete.notfound",
+                    "Usuário não encontrado!");
+        }
         repository.deleteById(id);
     }
 

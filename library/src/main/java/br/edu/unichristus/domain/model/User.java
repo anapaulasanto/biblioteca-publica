@@ -9,6 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
+
 public class User {
 
     @Id
@@ -29,7 +30,6 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
     public User(){
 
     }

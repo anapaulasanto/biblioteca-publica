@@ -18,45 +18,36 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
-    public CategoryDTO save(CategoryDTO categoryDTO){
-        try {
-            var categoryEntity = MapperUtil.parseObject(categoryDTO, Category.class);
-            var savedCategory = repository.save(categoryEntity);
-            return MapperUtil.parseObject(savedCategory, CategoryDTO.class);
+    public CategoryDTO save(CategoryDTO categoryDTO) {
+        var categoryEntity = MapperUtil.parseObject(categoryDTO, Category.class);
+        var savedCategory = repository.save(categoryEntity);
+        return MapperUtil.parseObject(savedCategory, CategoryDTO.class);
+    }
 
-        } catch (DataIntegrityViolationException ex) { // trata exceção que viola as regras do model da entidade
-            throw new CommonsException(
-                    HttpStatus.BAD_REQUEST,
-                    "unichristus.category.save.dataintegrity",
-                    "Erro ao tentar salvar categoria no banco. Alguma regra do banco foi violada durante o processo."
-            );
+    public List<CategoryDTO> findAll() {
+        var listCategories = repository.findAll();
+        return MapperUtil.parseListObjects(listCategories, CategoryDTO.class);
+    }
+
+    public Category findById(Long id) {
+        var categoryEntity = repository.findById(id);
+
+        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id procurado
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.category.findbyid.notfound",
+                    "Categoria não encontrada!");
         }
+        return repository.findById(id).get();
     }
 
-    public List<CategoryDTO> findAll(){
-            var listCategories = repository.findAll();
-            return MapperUtil.parseListObjects(listCategories, CategoryDTO.class);
-    }
-
-    public Category findById(Long id){
+    public void delete(Long id) {
         var categoryEntity = repository.findById(id);
 
-            if(categoryEntity.isEmpty()){ // trata exceção de não encontrar o id procurado
-                throw new CommonsException(HttpStatus.NOT_FOUND,
-                        "unichristus.category.findbyid.notfound",
-                        "Categoria não encontrada!");
-            }
-            return repository.findById(id).get();
-    }
-
-    public void delete(Long id){
-        var categoryEntity = repository.findById(id);
-
-            if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id a ser deletado
-                throw new CommonsException(HttpStatus.NOT_FOUND,
-                        "unichristus.category.delete.notfound",
-                        "Categoria não encontrada!");
-            }
-            repository.deleteById(id);
+        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id a ser deletado
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.category.delete.notfound",
+                    "Categoria não encontrada!");
+        }
+        repository.deleteById(id);
     }
 }
