@@ -38,6 +38,12 @@ public class BookService {
     RestTemplate restTemplate = new RestTemplate(); // cria instancia de RestTemplate (classe do spring q faz chamadas à API externa, tipo o axios do React)
 
     public BookDTO save(BookDTO bookDTO) {
+        if (bookDTO.getCategoryId() == null) {
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.book.categoryid.save.notfound",
+                    "Categoria do livro é um campo obrigatório!");
+        }
+
         var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);
 
         // salvando categoria na entidade livro

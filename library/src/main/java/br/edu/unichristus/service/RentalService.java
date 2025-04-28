@@ -38,16 +38,25 @@ public class RentalService {
     }
 
     public RentalDTO save(RentalDTO rentalDTO) {
-        var user = userRepository.findById(rentalDTO.getUserId());
-        if (user.isEmpty()) {
+        if (rentalDTO.getUserId() == null || rentalDTO.getBookId() == null) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
-                    "unichristus.rental.user.notfound", "Usuário não encontrado!");
+                    "unichristus.rental.user.book.notfound",
+                    "Usuário e livro são obrigatórios!");
         }
 
+        var user = userRepository.findById(rentalDTO.getUserId());
         var book = bookRepository.findById(rentalDTO.getBookId());
-        if (book.isEmpty()) {
+
+        if (user.isEmpty()) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
-                    "unichristus.rental.book.notfound", "Livro não encontrado!");
+                    "unichristus.rental.user.notfound",
+                    "Usuário não encontrado!");
+            
+        } else if (book.isEmpty()) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.rental.book.notfound",
+                    "Livro não encontrado!");
+
         }
 
         var rentalEntity = MapperUtil.parseObject(rentalDTO, Rental.class);
@@ -59,15 +68,15 @@ public class RentalService {
 
     }
 
-
-    public List<RentalDTO> findAll(){
+    public List<RentalDTO> findAll() {
         var listRentals = repository.findAll();
         return MapperUtil.parseListObjects(listRentals, RentalDTO.class);
     }
 
-    public Rental findById(Long id){
+    public Rental findById(Long id) {
         var rentalEntity = repository.findById(id);
-        if(rentalEntity.isEmpty()){
+
+        if (rentalEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.rental.findbyid.notfound",
                     "Aluguel não encontrado!");
@@ -76,10 +85,10 @@ public class RentalService {
         return repository.findById(id).get();
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         var rentalEntity = repository.findById(id);
 
-        if(rentalEntity.isEmpty()){
+        if (rentalEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.rental.delete.notfound",
                     "Aluguel não encontrado!");
@@ -88,12 +97,20 @@ public class RentalService {
     }
 
     public List<RentalDTO> findByUserId(Long userId) {
+        var user = userRepository.findById(userId);
+
+        if (user.isEmpty()) { // se o usuário não existir
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.user.findbyuserid.notfound",
+                    "Usuário não encontrado!");
+        }
+
         var rentals = repository.findByUserId(userId);
 
-        if (rentals.isEmpty()){
+        if (rentals.isEmpty()) { // se existir o usuário, mas não existir aluguel pra ele
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.rental.findbyuserid.notfound",
-                    "Aluguel não encontrado para o usuário informado!");
+                    "Aluguel não encontrado para o usuário fornecido!");
         }
         return MapperUtil.parseListObjects(rentals, RentalDTO.class);
     }

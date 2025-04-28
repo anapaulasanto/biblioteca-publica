@@ -32,7 +32,7 @@ public class CategoryService {
     public Category findById(Long id) {
         var categoryEntity = repository.findById(id);
 
-        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id procurado
+        if (categoryEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.category.findbyid.notfound",
                     "Categoria não encontrada!");
@@ -43,7 +43,7 @@ public class CategoryService {
     public void delete(Long id) {
         var categoryEntity = repository.findById(id);
 
-        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id a ser deletado
+        if (categoryEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.category.delete.notfound",
                     "Categoria não encontrada!");

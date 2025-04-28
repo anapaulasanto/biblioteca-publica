@@ -83,10 +83,23 @@ public class ReviewService {
 
 
     public List<ReviewDTO> findByBookId(Long bookId) {
+        var book = bookRepository.findById(bookId);
+
+        if (book.isEmpty()) { // se o livro não existir
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.review.book.findbybookid.notfound",
+                    "Livro não encontrado!");
+        }
+
         var reviews = repository.findByBookId(bookId);
+
+        if (reviews.isEmpty()) { // se existir o livro, mas não existir avaliação pra ele
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.review.findbybookid.notfound",
+                    "Avaliação não encontrada para o livro fornecido!");
+        }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
-
 
     public List<ReviewDTO> findAll() {
         var listReviews = repository.findAll();
@@ -103,16 +116,23 @@ public class ReviewService {
 
     public Review findById(Long id){
         var reviewEntity = repository.findById(id);
+
         if(reviewEntity.isEmpty()){
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.findbyid.notfound",
                     "Avaliação não encontrada!");
         }
-
         return repository.findById(id).get();
     }
 
     public void delete(Long id){
+        var reviewEntity = repository.findById(id);
+
+        if(reviewEntity.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.review.delete.notfound",
+                    "Avaliação não encontrada!");
+        }
         repository.deleteById(id);
     }
 

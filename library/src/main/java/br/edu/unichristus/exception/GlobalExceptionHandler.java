@@ -40,17 +40,17 @@ public class GlobalExceptionHandler {
             //EXCEÇÕES PARA CAMPO DUPLICADO
             if (messageLower.contains("(login)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new MessageDTO("Já existe um usuário cadastrado com esse login.",
+                        .body(new MessageDTO("Login já existente na base.",
                                 "unichristus.user.save.login.unique"));
 
             } else if (messageLower.contains("(isbn)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new MessageDTO("Já existe um livro cadastrado com esse isbn.",
+                        .body(new MessageDTO("Livro já existente para o ISBN informado.",
                                 "unichristus.book.save.isbn.unique"));
 
             } else if (messageLower.contains("(category_code)=") && messageLower.contains("viola a restrição de unicidade")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new MessageDTO("Já existe uma categoria cadastrada com esse código.",
+                        .body(new MessageDTO("Categoria já existente para o código informado.",
                                 "unichristus.category.save.categoryCode.unique"));
 
 
@@ -67,13 +67,17 @@ public class GlobalExceptionHandler {
 
             } else if (messageLower.contains("not-null property") && messageLower.contains("rental.rentaldate")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new MessageDTO("Erro ao tentar salvar aluguel. rentalDate é um campo obrigatório",
+                        .body(new MessageDTO("Erro ao tentar salvar aluguel. 'rentalDate' é um campo obrigatório",
                                 "unichristus.rental.salve.rentalDate.not-null"));
 
             } else if (messageLower.contains("not-null property") && messageLower.contains("category.categoryname")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new MessageDTO("Erro ao tentar salvar categoria. categoryName é um campo obrigatório",
+                        .body(new MessageDTO("Erro ao tentar salvar categoria. 'categoryName' é um campo obrigatório",
                                 "unichristus.category.salve.categoryName.not-null"));
+            } else if (messageLower.contains("not-null property") && messageLower.contains("review.rating")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new MessageDTO("Erro ao tentar salvar avaliação. 'rating' é um campo obrigatório",
+                                "unichristus.category.salve.rating.not-null"));
             }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST) // exceção genérica
