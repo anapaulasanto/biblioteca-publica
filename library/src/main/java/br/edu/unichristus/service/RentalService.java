@@ -51,12 +51,11 @@ public class RentalService {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
                     "unichristus.rental.user.notfound",
                     "Usuário não encontrado!");
-            
+
         } else if (book.isEmpty()) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
                     "unichristus.rental.book.notfound",
                     "Livro não encontrado!");
-
         }
 
         var rentalEntity = MapperUtil.parseObject(rentalDTO, Rental.class);
@@ -65,7 +64,6 @@ public class RentalService {
 
         var savedRental = repository.save(rentalEntity);
         return MapperUtil.parseObject(savedRental, RentalDTO.class);
-
     }
 
     public List<RentalDTO> findAll() {
@@ -81,7 +79,6 @@ public class RentalService {
                     "unichristus.rental.findbyid.notfound",
                     "Aluguel não encontrado!");
         }
-
         return repository.findById(id).get();
     }
 

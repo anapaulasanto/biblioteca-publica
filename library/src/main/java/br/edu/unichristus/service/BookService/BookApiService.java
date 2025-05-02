@@ -1,18 +1,11 @@
-package br.edu.unichristus.service;
+package br.edu.unichristus.service.BookService;
 
 import br.edu.unichristus.api.googleBooks.AccessInfo;
 import br.edu.unichristus.api.googleBooks.GoogleResponse;
 import br.edu.unichristus.api.googleBooks.VolumeInfo;
-import br.edu.unichristus.domain.dto.book.BookDTO;
 import br.edu.unichristus.domain.dto.book.BookLowDTO;
-import br.edu.unichristus.domain.model.Book;
 import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repository.BookRepository;
-import br.edu.unichristus.repository.CategoryRepository;
-import br.edu.unichristus.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,13 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BookService {
-
-    @Autowired
-    private BookRepository repository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-
+public class BookApiService {
     // pega a variavel endpoint.books que salvei no application.properties, que é o endpoint da API do Google
     @Value("${endpoint.books}")
     private String endpoint;
@@ -36,70 +23,6 @@ public class BookService {
     private String apiKey;
 
     RestTemplate restTemplate = new RestTemplate(); // cria instancia de RestTemplate (classe do spring q faz chamadas à API externa, tipo o axios do React)
-
-    public BookDTO save(BookDTO bookDTO) {
-        if (bookDTO.getCategoryId() == null) {
-            throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.categoryid.save.notfound",
-                    "Categoria do livro é um campo obrigatório!");
-        }
-
-        var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);
-
-        // salvando categoria na entidade livro
-        var category = categoryRepository.findById(bookDTO.getCategoryId())
-                .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
-                        "unichristus.category.notfound",
-                        "Categoria não encontrada!"));
-
-        bookEntity.setCategory(category);
-
-        var savedBook = repository.save(bookEntity);
-        BookDTO dto = MapperUtil.parseObject(savedBook, BookDTO.class);
-        dto.setCategoryId(savedBook.getCategory().getId());
-
-        return dto;
-    }
-
-    public List<BookDTO> findAll() {
-        var listBooks = repository.findAll();
-        return MapperUtil.parseListObjects(listBooks, BookDTO.class);
-    }
-
-    public Book findById(Long id) {
-        var bookEntity = repository.findById(id);
-
-        if (bookEntity.isEmpty()) {
-            throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.findbyid.notfound",
-                    "Livro não encontrado!");
-        }
-        return repository.findById(id).get();
-    }
-
-    public void delete(Long id) {
-        var categoryEntity = repository.findById(id);
-
-        if (categoryEntity.isEmpty()) { // trata exceção de não encontrar o id a ser deletado
-            throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.delete.notfound",
-                    "Livro não encontrado!");
-        }
-        repository.deleteById(id);
-    }
-
-    //Listar livros de uma mesma categoria
-    public List<BookDTO> findBooksByCategoryId(Long categoryId) {
-        List<Book> books = repository.findByCategoryId(categoryId);
-
-        if (books.isEmpty()) {
-            throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.findbooksbycategoryid.notfound",
-                    "Categoria de livros não encontrada!");
-        }
-        return MapperUtil.parseListObjects(books, BookDTO.class);
-    }
-
 
     //ENDPOINTS DA API DO GOOGLE
     public List<BookLowDTO> findAllApi() {
@@ -215,5 +138,4 @@ public class BookService {
             );
         }).collect(Collectors.toList());
     }
-
 }

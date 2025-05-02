@@ -90,7 +90,6 @@ public class ReviewService {
                     "unichristus.review.book.findbybookid.notfound",
                     "Livro não encontrado!");
         }
-
         var reviews = repository.findByBookId(bookId);
 
         if (reviews.isEmpty()) { // se existir o livro, mas não existir avaliação pra ele
