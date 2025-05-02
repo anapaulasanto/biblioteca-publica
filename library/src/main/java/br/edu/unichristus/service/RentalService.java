@@ -27,7 +27,21 @@ public class RentalService {
 
     //Listar rentals de um mesmo livro
     public List<RentalDTO> findRentalsByBookId(Long bookId) {
+        var book = bookRepository.findById(bookId);
+
+        if (book.isEmpty()) { // se nao encontrar o livro fornecido
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.bookid.findrentalsbybookid.notfound",
+                    "Livro não encontrado!");
+        }
+
         List<Rental> rentals = repository.findByBookId(bookId);
+
+        if (rentals.isEmpty()) { // se encontrar o livro fornecido, nas nao existir aluguel pro ele
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.findrentalsbybookid.notfound",
+                    "Aluguel não encontrado para o livro fornecido!");
+        }
         return MapperUtil.parseListObjects(rentals, RentalDTO.class);
     }
 

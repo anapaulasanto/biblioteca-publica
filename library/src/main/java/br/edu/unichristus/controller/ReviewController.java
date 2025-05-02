@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/review")
-public class ReviewController {
+public class    ReviewController {
     @Autowired
     private ReviewService service;
 

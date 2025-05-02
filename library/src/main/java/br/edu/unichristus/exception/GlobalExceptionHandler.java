@@ -74,6 +74,7 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Erro ao tentar salvar categoria. 'categoryName' é um campo obrigatório",
                                 "unichristus.category.salve.categoryName.not-null"));
+
             } else if (messageLower.contains("not-null property") && messageLower.contains("review.rating")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new MessageDTO("Erro ao tentar salvar avaliação. 'rating' é um campo obrigatório",

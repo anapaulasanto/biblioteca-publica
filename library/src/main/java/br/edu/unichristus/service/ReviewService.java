@@ -30,13 +30,37 @@ public class ReviewService {
 
     //Listar reviews de um mesmo livro
     public List<ReviewDTO> findReviewsByBookId(Long bookId) {
+        var book = bookRepository.findById(bookId);
+
+        if (book.isEmpty()) { // se não encontrar o livro
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.review.book.findreviewsbybookid.notfound", "Livro não encontrado.");
+        }
+
         List<Review> reviews = repository.findByBookId(bookId);
+
+        if (reviews.isEmpty()) { // se encontrar o livro, mas não encontrar avaliaçao pra ele
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.review.findreviewsbybookid.notfound", "Avaliação não encontrada para o livro fornecido");
+        }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
 
     //Listar reviews de um mesmo usuário
     public List<ReviewDTO> findReviewsByUserId(Long userId) {
+        var user = userRepository.findById(userId);
+
+        if (user.isEmpty()) { // se não encontrar o usuario
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.review.user.findreviewsbyuserid.notfound", "Usuário não encontrado.");
+        }
+
         List<Review> reviews = repository.findByUserId(userId);
+
+        if (reviews.isEmpty()) { // se encontrar o usuario, mas não encontrar avaliaçao pra ele
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.review.findreviewsbyuserid.notfound", "Avaliação não encontrada para o usuário fornecido");
+        }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
 
