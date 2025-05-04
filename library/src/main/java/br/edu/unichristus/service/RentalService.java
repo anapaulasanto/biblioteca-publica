@@ -47,14 +47,34 @@ public class RentalService {
 
     //Listar rentals de um mesmo user
     public List<RentalDTO> findRentalsByUserId(Long userId) {
+        var user = userRepository.findById(userId);
+
+        if (user.isEmpty()) { // se nao encontrar o usuario fornecido
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.userid.findrentalsbyuserid.notfound",
+                    "Usuário não encontrado!");
+        }
+
         List<Rental> rentals = repository.findByUserId(userId);
+
+        if (rentals.isEmpty()) { // se encontrar o usuario fornecido, nas nao existir aluguel pro ele
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.findrentalsbyuserid.notfound",
+                    "Aluguel não encontrado para o usuário fornecido!");
+        }
         return MapperUtil.parseListObjects(rentals, RentalDTO.class);
     }
 
     public RentalDTO save(RentalDTO rentalDTO) {
+        if (rentalDTO.getRentalDate() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.rental.rentaldate.badrequest",
+                    "Data do aluguel é um campo obrigatório");
+        }
+
         if (rentalDTO.getUserId() == null || rentalDTO.getBookId() == null) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
-                    "unichristus.rental.user.book.notfound",
+                    "unichristus.rental.user.book.badrequest",
                     "Usuário e livro são obrigatórios!");
         }
 
@@ -62,12 +82,12 @@ public class RentalService {
         var book = bookRepository.findById(rentalDTO.getBookId());
 
         if (user.isEmpty()) {
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.rental.user.notfound",
                     "Usuário não encontrado!");
 
         } else if (book.isEmpty()) {
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.rental.book.notfound",
                     "Livro não encontrado!");
         }

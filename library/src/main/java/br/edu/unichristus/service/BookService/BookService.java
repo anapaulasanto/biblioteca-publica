@@ -21,10 +21,22 @@ public class BookService {
     private CategoryRepository categoryRepository;
 
     public BookDTO save(BookDTO bookDTO) {
+        if (repository.findByIsbn(bookDTO.getIsbn()).isPresent()) {
+            throw new CommonsException(HttpStatus.CONFLICT,
+                    "unichristus.book.isbn.conflict",
+                    "Livro já existente para o ISBN informado.");
+        }
+
         if (bookDTO.getCategoryId() == null) {
-            throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.book.categoryid.save.notfound",
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.book.categoryid.save.badrequest",
                     "Categoria do livro é um campo obrigatório!");
+        }
+
+        if (bookDTO.getTitle() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.book.title.save.badrequest",
+                    "Título do livro é um campo obrigatório!");
         }
 
         var bookEntity = MapperUtil.parseObject(bookDTO, Book.class);

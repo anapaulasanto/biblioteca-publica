@@ -33,14 +33,14 @@ public class ReviewService {
         var book = bookRepository.findById(bookId);
 
         if (book.isEmpty()) { // se não encontrar o livro
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.book.findreviewsbybookid.notfound", "Livro não encontrado.");
         }
 
         List<Review> reviews = repository.findByBookId(bookId);
 
         if (reviews.isEmpty()) { // se encontrar o livro, mas não encontrar avaliaçao pra ele
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.findreviewsbybookid.notfound", "Avaliação não encontrada para o livro fornecido");
         }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
@@ -51,14 +51,14 @@ public class ReviewService {
         var user = userRepository.findById(userId);
 
         if (user.isEmpty()) { // se não encontrar o usuario
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.user.findreviewsbyuserid.notfound", "Usuário não encontrado.");
         }
 
         List<Review> reviews = repository.findByUserId(userId);
 
         if (reviews.isEmpty()) { // se encontrar o usuario, mas não encontrar avaliaçao pra ele
-            throw new CommonsException(HttpStatus.BAD_REQUEST,
+            throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.findreviewsbyuserid.notfound", "Avaliação não encontrada para o usuário fornecido");
         }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
@@ -66,10 +66,16 @@ public class ReviewService {
 
 
     public ReviewDTO save(ReviewDTO reviewDTO) {
+//        if (reviewDTO.getRating() == null) {
+//            throw new CommonsException(HttpStatus.BAD_REQUEST,
+//                    "unichristus.review.rating.badrequest",
+//                    "Nota da avaliação é um campo obrigatório.");
+//        }
+
         // Verificar se os IDs não são nulos antes de fazer as consultas
         if (reviewDTO.getBookId() == null || reviewDTO.getUserId() == null) {
             throw new CommonsException(HttpStatus.BAD_REQUEST,
-                    "unichristus.review.invaliddata", "Livro ou Usuário não especificado.");
+                    "unichristus.review.badrequest", "Livro ou Usuário não especificado.");
         }
 
         // Buscar o livro associado

@@ -21,6 +21,18 @@ public class UserService {
     private UserRepository repository;
 
     public UserLowDTO save(UserDTO user){
+        if(repository.findByLogin(user.getLogin()).isPresent()){
+            throw new CommonsException(HttpStatus.CONFLICT,
+                    "unichristus.user.login.conflict",
+                    "Usuario já existe!");
+        }
+
+        if (user.getName() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.user.name.badrequest",
+                    "Nome do usuário é um campo obrigatório");
+        }
+
         var userEntity = MapperUtil.parseObject(user, User.class);
         var savedUser = repository.save(userEntity);
         return MapperUtil.parseObject(savedUser, UserLowDTO.class);

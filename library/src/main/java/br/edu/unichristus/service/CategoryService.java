@@ -19,6 +19,18 @@ public class CategoryService {
     private CategoryRepository repository;
 
     public CategoryDTO save(CategoryDTO categoryDTO) {
+        if (repository.findByCategoryCode(categoryDTO.getCategoryCode()).isPresent()) {
+            throw new CommonsException(HttpStatus.CONFLICT,
+                    "unichristus.category.categorycode.conflict",
+                    "Categoria já existente para o código informado.");
+        }
+
+        if (categoryDTO.getCategoryName() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.category.categorycode.badrequest",
+                    "Nome da categoria é um campo obrigatório.");
+        }
+
         var categoryEntity = MapperUtil.parseObject(categoryDTO, Category.class);
         var savedCategory = repository.save(categoryEntity);
         return MapperUtil.parseObject(savedCategory, CategoryDTO.class);
