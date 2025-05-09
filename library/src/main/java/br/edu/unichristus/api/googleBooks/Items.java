@@ -1,9 +1,21 @@
 package br.edu.unichristus.api.googleBooks;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "items")
+
 public class Items {
-    private VolumeInfo volumeInfo;
-    private AccessInfo accessInfo;
+    @Id
     private String id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "volume_info_id")
+    private VolumeInfo volumeInfo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "access_info_id")
+    private AccessInfo accessInfo;
 
     public String getId() {
         return id;

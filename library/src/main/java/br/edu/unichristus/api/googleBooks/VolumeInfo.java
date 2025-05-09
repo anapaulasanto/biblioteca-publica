@@ -1,13 +1,39 @@
 package br.edu.unichristus.api.googleBooks;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "volume_info")
+
 public class VolumeInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "volume_info_authors",
+            joinColumns = @JoinColumn(name = "volume_info_id")
+    )
+    @Column(name = "author")
     private List<String> authors;
+
     private String publishedDate;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "volume_info_categories",
+            joinColumns = @JoinColumn(name = "volume_info_id")
+    )
+    @Column(name = "category")
     private List<String> categories = new ArrayList<>();
 
     public String getTitle() {
