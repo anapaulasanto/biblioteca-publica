@@ -1,11 +1,14 @@
 package br.edu.unichristus.domain.dto.category;
 
 import br.edu.unichristus.domain.model.Category;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Objects;
 
 public class CategoryDTO {
+
+    @Schema(hidden = true)
     private Long id;
     private String categoryName;
     private String description;

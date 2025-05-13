@@ -1,10 +1,12 @@
 package br.edu.unichristus.domain.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
 public class UserLowDTO {
+    @Schema(hidden = true)
     private Long id;
 
     @JsonProperty("nome")

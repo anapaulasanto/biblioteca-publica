@@ -1,11 +1,13 @@
 package br.edu.unichristus.domain.dto.rental;
 
 import br.edu.unichristus.domain.model.Rental;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 
 import java.util.Objects;
 
 public class RentalDTO {
+    @Schema(hidden = true)
     private Long id;
     private String rentalDate;
     private String returnDate;

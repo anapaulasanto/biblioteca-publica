@@ -3,10 +3,12 @@ package br.edu.unichristus.domain.dto.book;
 
 import br.edu.unichristus.domain.model.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
 public class BookDTO {
+    @Schema(hidden = true)
     private Long id;
     private String title;
     private String author;

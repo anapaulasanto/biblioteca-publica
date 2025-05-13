@@ -2,11 +2,13 @@ package br.edu.unichristus.domain.dto.book;
 
 import br.edu.unichristus.domain.model.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Objects;
 
 public class BookLowDTO {
+    @Schema(hidden = true)
     private String title;
     private List<String> author;
     private String year;

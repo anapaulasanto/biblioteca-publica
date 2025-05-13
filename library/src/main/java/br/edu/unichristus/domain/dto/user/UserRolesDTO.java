@@ -1,8 +1,10 @@
 package br.edu.unichristus.domain.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UserRolesDTO {
+    @Schema(hidden = true)
     private Long id;
 
     @JsonProperty("nome")
