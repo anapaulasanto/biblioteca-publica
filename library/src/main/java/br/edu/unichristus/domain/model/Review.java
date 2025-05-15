@@ -13,7 +13,7 @@ public class Review {
     private Long id;
 
     @Column(nullable = false)
-    private double rating; // a nota é obrigatória
+    private Double rating; // a nota é obrigatória
 
     @Column(length = 450)
     private String comment; // o comentário é opcional
@@ -33,7 +33,7 @@ public class Review {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Review(Long id, double rating, String comment, LocalDate reviewDate, String reviewerName) {
+    public Review(Long id, Double rating, String comment, LocalDate reviewDate, String reviewerName) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
@@ -52,11 +52,11 @@ public class Review {
         this.id = id;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

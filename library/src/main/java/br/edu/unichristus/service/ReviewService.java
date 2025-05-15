@@ -67,10 +67,7 @@ public class ReviewService {
     }
 
     public ReviewDTO save(ReviewDTO reviewDTO) {
-        Double rating = reviewDTO.getRating();
-        String ratingStr = String.valueOf(rating);
-
-        if (ratingStr == null) {
+        if (reviewDTO.getRating() == null) {
             throw new CommonsException(
                     HttpStatus.BAD_REQUEST,
                     "unichristus.review.rating.badrequest",
@@ -184,6 +181,8 @@ public class ReviewService {
             dto.setRating(r.getRating());
             dto.setBookId(r.getBook().getId());
             dto.setUserId(r.getUser().getId());
+            dto.setReviewerName(r.getUser().getName());
+            dto.setReviewDate(r.getReviewDate());
             return dto;
         }).toList();
     }

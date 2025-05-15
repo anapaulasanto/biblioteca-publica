@@ -4,6 +4,7 @@ import br.edu.unichristus.domain.model.Review;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,7 +14,8 @@ public class ReviewDTO {
     private Long id;
 
     @JsonProperty("nota")
-    private double rating;
+    @NotNull(message = "Nota é obrigatória")
+    private Double rating;
 
     @JsonProperty("comentario")
     private String comment;
@@ -26,7 +28,7 @@ public class ReviewDTO {
     private Long bookId;
     private Long userId;
 
-    public ReviewDTO(Long id, double rating, String comment, LocalDate reviewDate, String reviewerName, Long bookId, Long userId) {
+    public ReviewDTO(Long id, Double rating, String comment, LocalDate reviewDate, String reviewerName, Long bookId, Long userId) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
@@ -47,11 +49,11 @@ public class ReviewDTO {
         this.id = id;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

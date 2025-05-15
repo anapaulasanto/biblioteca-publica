@@ -3,6 +3,7 @@ package br.edu.unichristus.controller;
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Review;
 import br.edu.unichristus.service.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ReviewController {
 
     @Operation(summary = "Cadastra uma nova avaliação | role: [ADMIN, USER]", tags = "Review")
     @PostMapping
-    public ReviewDTO save(@RequestBody ReviewDTO review){
+    public ReviewDTO save(@RequestBody @Valid ReviewDTO review){
         return service.save(review);
     }
 
