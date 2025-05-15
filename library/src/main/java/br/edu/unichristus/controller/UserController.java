@@ -1,5 +1,18 @@
 package br.edu.unichristus.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.edu.unichristus.domain.dto.rental.RentalDTO;
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.dto.user.UserDTO;
@@ -8,13 +21,9 @@ import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.service.RentalService;
 import br.edu.unichristus.service.ReviewService;
 import br.edu.unichristus.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -30,9 +39,9 @@ return service.save(user);
     }
 
     @Operation(summary = "Atualiza os dados de um usuário | role: [ADMIN]", tags = "User")
-    @PutMapping
-    public UserLowDTO update(@RequestBody UserDTO user){
-        return service.save(user);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserLowDTO> update(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(service.update(id, userDTO));
     }
 
     @Operation(summary = "Retorna a lista de todos os usuários | role: [ADMIN]", tags = "User")

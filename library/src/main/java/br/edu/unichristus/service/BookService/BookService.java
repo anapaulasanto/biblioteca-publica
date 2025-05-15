@@ -56,10 +56,57 @@ public class BookService {
         return dto;
     }
 
+    public BookDTO update(Long id, BookDTO bookDTO) {
+        var existingBook = repository.findById(id)
+                .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                        "unichristus.book.update.notfound",
+                        "Livro para atualização não encontrado."));
+
+        var existingBookWithSameIsbn = repository.findByIsbn(bookDTO.getIsbn());
+        if (existingBookWithSameIsbn.isPresent()
+                && !existingBookWithSameIsbn.get().getId().equals(id)) {
+            throw new CommonsException(HttpStatus.CONFLICT,
+                    "unichristus.book.isbn.conflict",
+                    "Já existe outro livro com o mesmo ISBN.");
+        }
+
+        if (bookDTO.getCategoryId() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.book.categoryid.badrequest",
+                    "Categoria do livro é um campo obrigatório.");
+        }
+
+        if (bookDTO.getTitle() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.book.title.badrequest",
+                    "Título do livro é um campo obrigatório.");
+        }
+
+        existingBook.setTitle(bookDTO.getTitle());
+        existingBook.setAuthor(bookDTO.getAuthor());
+        existingBook.setYear(bookDTO.getYear());
+        existingBook.setIsbn(bookDTO.getIsbn());
+
+        var category = categoryRepository.findById(bookDTO.getCategoryId())
+                .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                "unichristus.category.notfound",
+                "Categoria não encontrada!"));
+        existingBook.setCategory(category);
+
+        var updatedBook = repository.save(existingBook);
+
+        BookDTO updatedDTO = MapperUtil.parseObject(updatedBook, BookDTO.class);
+        updatedDTO.setCategoryId(updatedBook.getCategory().getId());
+
+        return updatedDTO;
+    }
+
+
     public List<BookDTO> findAll() {
         var listBooks = repository.findAll();
         return MapperUtil.parseListObjects(listBooks, BookDTO.class);
     }
+
 
     public Book findById(Long id) {
         var bookEntity = repository.findById(id);

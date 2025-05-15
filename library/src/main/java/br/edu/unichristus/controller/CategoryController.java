@@ -1,18 +1,25 @@
 package br.edu.unichristus.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.edu.unichristus.domain.dto.book.BookDTO;
 import br.edu.unichristus.domain.dto.category.CategoryDTO;
 import br.edu.unichristus.domain.model.Category;
 import br.edu.unichristus.service.BookService.BookService;
 import br.edu.unichristus.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/category")
@@ -22,19 +29,19 @@ public class CategoryController {
 
     @Operation(summary = "Cadastra uma nova categoria | role: [ADMIN]", tags = "Category")
     @PostMapping
-    public CategoryDTO save(@RequestBody CategoryDTO category){
+    public CategoryDTO save(@RequestBody CategoryDTO category) {
         return service.save(category);
     }
 
     @Operation(summary = "Atualiza uma categoria existente | role: [ADMIN]", tags = "Category")
-    @PutMapping
-    public CategoryDTO update(@RequestBody CategoryDTO category){
-        return service.save(category);
+    @PutMapping("/{id}")
+    public CategoryDTO update(@PathVariable Long id, @RequestBody CategoryDTO category) {
+        return service.update(id, category);
     }
 
     @Operation(summary = "Retorna todas as categorias | role: [ADMIN, USER]", tags = "Category")
     @GetMapping("/all")
-    public List<CategoryDTO> findAll(){
+    public List<CategoryDTO> findAll() {
         return service.findAll();
     }
 
@@ -45,7 +52,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     })
     @GetMapping("/{id}")
-    public Category findById(@PathVariable Long id){
+    public Category findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
@@ -56,7 +63,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     })
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 

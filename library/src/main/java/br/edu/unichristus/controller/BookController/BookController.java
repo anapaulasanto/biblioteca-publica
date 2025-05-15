@@ -31,7 +31,7 @@ public class BookController {
     @Operation(summary = "Atualiza um livro existente | role: [ADMIN]", tags = "Book")
     @PutMapping("/{id}")
     public BookDTO update(@PathVariable Long id, @RequestBody BookDTO book){
-        return service.save(book);
+        return service.update(id, book);
     }
 
     @Operation(summary = "Retorna todos os livros | role: [ADMIN, USER]", tags = "Book")

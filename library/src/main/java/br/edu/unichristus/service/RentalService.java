@@ -1,20 +1,19 @@
 package br.edu.unichristus.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import br.edu.unichristus.domain.dto.rental.RentalDTO;
-import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Rental;
-import br.edu.unichristus.domain.model.Review;
-import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.BookRepository;
 import br.edu.unichristus.repository.RentalRepository;
 import br.edu.unichristus.repository.UserRepository;
 import br.edu.unichristus.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RentalService {
@@ -25,7 +24,7 @@ public class RentalService {
     @Autowired
     private BookRepository bookRepository;
 
-    //Listar rentals de um mesmo livro
+    // Listar rentals de um mesmo livro
     public List<RentalDTO> findRentalsByBookId(Long bookId) {
         var book = bookRepository.findById(bookId);
 
@@ -45,7 +44,7 @@ public class RentalService {
         return MapperUtil.parseListObjects(rentals, RentalDTO.class);
     }
 
-    //Listar rentals de um mesmo user
+    // Listar rentals de um mesmo user
     public List<RentalDTO> findRentalsByUserId(Long userId) {
         var user = userRepository.findById(userId);
 
@@ -98,6 +97,51 @@ public class RentalService {
 
         var savedRental = repository.save(rentalEntity);
         return MapperUtil.parseObject(savedRental, RentalDTO.class);
+    }
+
+    public RentalDTO update(Long id, RentalDTO rentalDTO) {
+        Optional<Rental> existingRentalOpt = repository.findById(id);
+
+        if (existingRentalOpt.isEmpty()) {
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.rental.update.notfound",
+                    "Aluguel não encontrado para o ID informado.");
+        }
+        Rental existingRental = existingRentalOpt.get();
+
+        if (rentalDTO.getRentalDate() != null)
+            existingRental.setRentalDate(rentalDTO.getRentalDate());
+
+        if (rentalDTO.getReturnDate() != null)
+            existingRental.setReturnDate(rentalDTO.getReturnDate());
+
+        if (rentalDTO.getStatus() != null)
+            existingRental.setStatus(rentalDTO.getStatus());
+
+        if (rentalDTO.getNotes() != null)
+            existingRental.setNotes(rentalDTO.getNotes());
+
+        if (rentalDTO.getUserId() != null) {
+            var user = userRepository.findById(rentalDTO.getUserId());
+            if (user.isEmpty()) {
+                throw new CommonsException(HttpStatus.NOT_FOUND,
+                        "unichristus.rental.user.notfound",
+                        "Usuário não encontrado!");
+            }
+            existingRental.setUser(user.get());
+        }
+        if (rentalDTO.getBookId() != null) {
+            var book = bookRepository.findById(rentalDTO.getBookId());
+            if (book.isEmpty()) {
+                throw new CommonsException(HttpStatus.NOT_FOUND,
+                        "unichristus.rental.book.notfound",
+                        "Livro não encontrado!");
+            }
+            existingRental.setBook(book.get());
+        }
+
+        Rental updatedRental = repository.save(existingRental);
+        return MapperUtil.parseObject(updatedRental, RentalDTO.class);
     }
 
     public List<RentalDTO> findAll() {

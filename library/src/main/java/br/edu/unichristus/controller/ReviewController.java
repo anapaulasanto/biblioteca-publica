@@ -24,10 +24,10 @@ public class ReviewController {
         return service.save(review);
     }
 
-    @Operation(summary = "Atualiza uma avaliação existente | role: [ADMIN, USER]", tags = "Review")
-    @PutMapping
-    public ReviewDTO update(@RequestBody ReviewDTO review){
-        return service.save(review);
+    @Operation(summary = "Atualiza uma avaliação existente por ID | role: [ADMIN, USER]", tags = "Review")
+    @PutMapping("/{id}")
+    public ReviewDTO update(@PathVariable Long id, @RequestBody ReviewDTO dto) {
+        return service.update(id, dto);
     }
 
     @Operation(summary = "Retorna todas as avaliações | role: [ADMIN]", tags = "Review")

@@ -1,21 +1,21 @@
 package br.edu.unichristus.service;
 
-import br.edu.unichristus.domain.dto.book.BookDTO;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import br.edu.unichristus.domain.dto.review.ReviewDTO;
 import br.edu.unichristus.domain.model.Book;
 import br.edu.unichristus.domain.model.Review;
 import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repository.ReviewRepository;
 import br.edu.unichristus.repository.BookRepository;
+import br.edu.unichristus.repository.ReviewRepository;
 import br.edu.unichristus.repository.UserRepository;
 import br.edu.unichristus.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class ReviewService {
@@ -28,7 +28,7 @@ public class ReviewService {
     @Autowired
     private UserRepository userRepository;
 
-    //Listar reviews de um mesmo livro
+    // Listar reviews de um mesmo livro
     public List<ReviewDTO> findReviewsByBookId(Long bookId) {
         var book = bookRepository.findById(bookId);
 
@@ -41,12 +41,13 @@ public class ReviewService {
 
         if (reviews.isEmpty()) { // se encontrar o livro, mas não encontrar avaliaçao pra ele
             throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.review.findreviewsbybookid.notfound", "Avaliação não encontrada para o livro fornecido");
+                    "unichristus.review.findreviewsbybookid.notfound",
+                    "Avaliação não encontrada para o livro fornecido");
         }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
 
-    //Listar reviews de um mesmo usuário
+    // Listar reviews de um mesmo usuário
     public List<ReviewDTO> findReviewsByUserId(Long userId) {
         var user = userRepository.findById(userId);
 
@@ -59,18 +60,23 @@ public class ReviewService {
 
         if (reviews.isEmpty()) { // se encontrar o usuario, mas não encontrar avaliaçao pra ele
             throw new CommonsException(HttpStatus.NOT_FOUND,
-                    "unichristus.review.findreviewsbyuserid.notfound", "Avaliação não encontrada para o usuário fornecido");
+                    "unichristus.review.findreviewsbyuserid.notfound",
+                    "Avaliação não encontrada para o usuário fornecido");
         }
         return MapperUtil.parseListObjects(reviews, ReviewDTO.class);
     }
 
-
     public ReviewDTO save(ReviewDTO reviewDTO) {
-//        if (reviewDTO.getRating() == null) {
-//            throw new CommonsException(HttpStatus.BAD_REQUEST,
-//                    "unichristus.review.rating.badrequest",
-//                    "Nota da avaliação é um campo obrigatório.");
-//        }
+        Double rating = reviewDTO.getRating();
+        String ratingStr = String.valueOf(rating);
+
+        if (ratingStr == null) {
+            throw new CommonsException(
+                    HttpStatus.BAD_REQUEST,
+                    "unichristus.review.rating.badrequest",
+                    "Nota da avaliação é um campo obrigatório."
+            );
+        }
 
         // Verificar se os IDs não são nulos antes de fazer as consultas
         if (reviewDTO.getBookId() == null || reviewDTO.getUserId() == null) {
@@ -92,13 +98,12 @@ public class ReviewService {
         Review review = new Review();
         review.setComment(reviewDTO.getComment());
         review.setRating(reviewDTO.getRating());
-        review.setReviewDate(reviewDTO.getReviewDate() != null ? reviewDTO.getReviewDate() : LocalDate.now()); // Adicionando data atual se não for fornecida
+        review.setReviewDate(reviewDTO.getReviewDate() != null ? reviewDTO.getReviewDate() : LocalDate.now());
         review.setBook(book);
         review.setUser(user);
 
         Review savedReview = repository.save(review);
 
-        // Criando o DTO e preenchendo reviewerName corretamente
         ReviewDTO responseDTO = new ReviewDTO();
         responseDTO.setId(savedReview.getId());
         responseDTO.setComment(savedReview.getComment());
@@ -106,11 +111,51 @@ public class ReviewService {
         responseDTO.setReviewDate(savedReview.getReviewDate());
         responseDTO.setBookId(savedReview.getBook().getId());
         responseDTO.setUserId(savedReview.getUser().getId());
-        responseDTO.setReviewerName(savedReview.getUser().getName()); // Preenchendo o reviewerName
+        responseDTO.setReviewerName(savedReview.getUser().getName());
 
         return responseDTO;
     }
 
+    public ReviewDTO update(Long id, ReviewDTO dto) {
+        Review existingReview = repository.findById(id)
+                .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                        "unichristus.review.update.notfound", "Avaliação não encontrada."));
+
+        // Atualiza os campos permitidos
+        existingReview.setRating(dto.getRating());
+        existingReview.setComment(dto.getComment());
+        existingReview.setReviewDate(dto.getReviewDate() != null ? dto.getReviewDate() : LocalDate.now());
+
+        // Atualiza livro, se necessário
+        if (dto.getBookId() != null) {
+            Book book = bookRepository.findById(dto.getBookId())
+                    .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                            "unichristus.book.findbyid.notfound", "Livro não encontrado."));
+            existingReview.setBook(book);
+        }
+
+        // Atualiza usuário, se necessário
+        if (dto.getUserId() != null) {
+            User user = userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new CommonsException(HttpStatus.NOT_FOUND,
+                            "unichristus.user.findbyid.notfound", "Usuário não encontrado."));
+            existingReview.setUser(user);
+        }
+
+        Review updated = repository.save(existingReview);
+
+        // Retorno como DTO
+        ReviewDTO updatedDTO = new ReviewDTO();
+        updatedDTO.setId(updated.getId());
+        updatedDTO.setRating(updated.getRating());
+        updatedDTO.setComment(updated.getComment());
+        updatedDTO.setReviewDate(updated.getReviewDate());
+        updatedDTO.setBookId(updated.getBook().getId());
+        updatedDTO.setUserId(updated.getUser().getId());
+        updatedDTO.setReviewerName(updated.getUser().getName());
+
+        return updatedDTO;
+    }
 
     public List<ReviewDTO> findByBookId(Long bookId) {
         var book = bookRepository.findById(bookId);
@@ -143,10 +188,10 @@ public class ReviewService {
         }).toList();
     }
 
-    public Review findById(Long id){
+    public Review findById(Long id) {
         var reviewEntity = repository.findById(id);
 
-        if(reviewEntity.isEmpty()){
+        if (reviewEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.findbyid.notfound",
                     "Avaliação não encontrada!");
@@ -154,16 +199,15 @@ public class ReviewService {
         return repository.findById(id).get();
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         var reviewEntity = repository.findById(id);
 
-        if(reviewEntity.isEmpty()){
+        if (reviewEntity.isEmpty()) {
             throw new CommonsException(HttpStatus.NOT_FOUND,
                     "unichristus.review.delete.notfound",
                     "Avaliação não encontrada!");
         }
         repository.deleteById(id);
     }
-
 
 }

@@ -1,5 +1,11 @@
 package br.edu.unichristus.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import br.edu.unichristus.domain.dto.user.UserDTO;
 import br.edu.unichristus.domain.dto.user.UserLowDTO;
 import br.edu.unichristus.domain.dto.user.UserRolesDTO;
@@ -7,12 +13,6 @@ import br.edu.unichristus.domain.model.User;
 import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.UserRepository;
 import br.edu.unichristus.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -37,6 +37,40 @@ public class UserService {
         var savedUser = repository.save(userEntity);
         return MapperUtil.parseObject(savedUser, UserLowDTO.class);
     }
+
+    public UserLowDTO update(Long id, UserDTO userDTO) {
+        if (userDTO.getName() == null) {
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.user.name.badrequest",
+                    "Nome do usuário é obrigatório para atualização!");
+        }
+
+        var existingUser = repository.findById(id);
+        if (existingUser.isEmpty()) {
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.user.update.notfound",
+                    "Usuário não encontrado para atualização!");
+        }
+
+        var userEntity = existingUser.get();
+
+        var userWithSameLogin = repository.findByLogin(userDTO.getLogin());
+        if (userWithSameLogin.isPresent() && !userWithSameLogin.get().getId().equals(id)) {
+            throw new CommonsException(HttpStatus.CONFLICT,
+                    "unichristus.user.login.conflict",
+                    "Login já está em uso por outro usuário!");
+        }
+
+
+        userEntity.setName(userDTO.getName());
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+
+        var updatedUser = repository.save(userEntity);
+        return MapperUtil.parseObject(updatedUser, UserLowDTO.class);
+    }
+
 
     public List<UserLowDTO> findAll(){
         var listUsers = repository.findAll();
